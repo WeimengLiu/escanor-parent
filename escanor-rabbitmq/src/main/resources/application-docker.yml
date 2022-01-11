@@ -1,0 +1,17 @@
+server:
+  port: 8891
+
+spring:
+  rabbitmq:
+    username: admin
+    password: admin
+    virtual-host: /test
+    queue:
+      listeners:
+        testListener:
+          queueNames: test
+          minConsumer: 1
+          maxConsumer: 1
+          threadMaxSize: 1
+      enableListener: true
+    host: host.docker.internal

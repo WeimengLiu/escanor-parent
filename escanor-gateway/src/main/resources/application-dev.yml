@@ -1,0 +1,33 @@
+server:
+  port: 8887
+
+spring:
+  cloud:
+    gateway:
+      httpclient:
+        ssl:
+          useInsecureTrustManager: true
+        connect-timeout: 10000
+        response-timeout: 120s
+      routes:
+        - id: escanor-multids
+          uri: lb://escanor-multids
+          predicates:
+            - Path=/multids/**
+          filters:
+            - StripPrefix=1
+    loadbalancer:
+      ribbon:
+        enabled: false
+
+management:
+  metrics:
+    tags:
+      application: ${spring.application.name}
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always

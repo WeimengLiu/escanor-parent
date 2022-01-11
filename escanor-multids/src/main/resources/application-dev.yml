@@ -1,0 +1,37 @@
+server:
+  port: 8888
+spring:
+  rabbitmq:
+    username: admin
+    password: admin
+    virtual-host: /test
+  datasources:
+    default:
+      name: default
+      url: jdbc:mysql://localhost:3306/test?useUnicode=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=GMT%2B8
+      jdbc-url: jdbc:mysql://localhost:3306/test?useUnicode=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=GMT%2B8
+      username: wmliu
+      password: 876286443
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      driver-class: com.mysql.cj.jdbc.Driver
+      maximum-pool-size: 20
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 120000
+      supports: '6447'
+
+    test:
+      name: test
+      url: jdbc:mysql://localhost:3306/test1?useUnicode=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=GMT%2B8
+      jdbc-url: jdbc:mysql://localhost:3306/test1?useUnicode=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=GMT%2B8
+      username: wmliu
+      password: 876286443
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      driver-class: com.mysql.cj.jdbc.Driver
+      maximum-pool-size: 20
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 120000
+      supports: '6438'
+  sleuth:
+    default-logging-pattern-enabled: true

@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: escanor-rabbitmq
+  profiles:
+    active: dev
+  cloud:
+    consul:
+      port: 8500
+      discovery:
+        prefer-ip-address: true
+        instance-id: ${spring.application.name}:${spring.cloud.client.ip-address}:${server.port}
+        health-check-interval: '30s'
+        health-check-tls-skip-verify: true
+        #tags: user.name=consul, user.password=consul
+        #scheme: https
+      config:
+        data-key: configuration
+        enabled: true
+        watch:
+          enabled: true
+        profile-separator: '::'
+        format: yaml
+        fail-fast: false
+      host: localhost
+
+---
+spring:
+  profiles: docker
+  cloud:
+    consul:
+      host: host.docker.internal
