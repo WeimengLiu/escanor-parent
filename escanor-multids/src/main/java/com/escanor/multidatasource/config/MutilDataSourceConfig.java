@@ -4,6 +4,7 @@ import com.escanor.multidatasource.repository.MyRouteDataSource;
 import com.zaxxer.hikari.HikariDataSource;
 import org.apache.commons.lang.ArrayUtils;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -19,6 +20,7 @@ import java.util.Map;
 @Configuration
 @EnableConfigurationProperties(MutilDataSourceProperties.class)
 @AutoConfigureBefore(DataSourceAutoConfiguration.class)
+@ConditionalOnExpression("${spring.enableMultiDs:false}")
 public class MutilDataSourceConfig {
 
     @Bean

@@ -3,7 +3,6 @@ package com.escanor.rabbitmq.config;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -69,7 +68,7 @@ public class MyMqProperties {
 
         private Long receiveTimeout = 30000L;
 
-        private String listenerName = "com.escanor.rabbitmq.listener.TestMqListener";
+        private String listenerHandler = "listener:defaultMqListener";
 
         private int queuePrefetch = 10;
 
@@ -111,12 +110,12 @@ public class MyMqProperties {
             this.threadMaxSize = threadMaxSize;
         }
 
-        public String getListenerName() {
-            return listenerName;
+        public String getListenerHandler() {
+            return listenerHandler;
         }
 
-        public void setListenerName(String listenerName) {
-            this.listenerName = listenerName;
+        public void setListenerHandler(String listenerHandler) {
+            this.listenerHandler = listenerHandler;
         }
 
         public Integer getMaxMessagesPerTask() {

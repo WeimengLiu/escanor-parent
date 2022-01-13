@@ -1,6 +1,6 @@
 package com.escanor.multidatasource.controller;
 
-import com.escanor.multidatasource.common.ContextHolder;
+import com.escanor.core.ContextHolder;
 import com.escanor.multidatasource.entity.UserEntity;
 import com.escanor.multidatasource.service.UserService;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,8 +17,8 @@ public class UserController {
     }
 
     @RequestMapping("/user/{code}/{id}")
-    public UserEntity findById(@PathVariable(name = "code") String bankCode, @PathVariable(name = "id") Long id) {
-        ContextHolder.setCode(bankCode);
+    public UserEntity findById(@PathVariable(name = "code") String code, @PathVariable(name = "id") Long id) {
+        ContextHolder.setCode(code);
         return userService.findById(id);
     }
 }

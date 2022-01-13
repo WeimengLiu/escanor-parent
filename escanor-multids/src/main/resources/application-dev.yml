@@ -1,6 +1,8 @@
 server:
   port: 8888
+
 spring:
+  enableMultiDs: true
   rabbitmq:
     username: admin
     password: admin
@@ -35,3 +37,6 @@ spring:
       supports: '6438'
   sleuth:
     default-logging-pattern-enabled: true
+logging:
+  file:
+    path: logs

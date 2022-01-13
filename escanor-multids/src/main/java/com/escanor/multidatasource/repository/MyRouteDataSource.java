@@ -1,6 +1,6 @@
 package com.escanor.multidatasource.repository;
 
-import com.escanor.multidatasource.common.ContextHolder;
+import com.escanor.core.ContextHolder;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 import org.springframework.util.Assert;
 

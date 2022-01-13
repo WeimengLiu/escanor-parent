@@ -1,6 +1,7 @@
 server:
   port: 8889
 spring:
+  enableMultiDs: true
   rabbitmq:
     username: admin
     password: admin

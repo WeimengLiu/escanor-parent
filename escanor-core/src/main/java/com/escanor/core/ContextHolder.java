@@ -1,4 +1,4 @@
-package com.escanor.rabbitmq.common;
+package com.escanor.core;
 
 public class ContextHolder {
     static volatile int APP_READY_STATUS = 0;

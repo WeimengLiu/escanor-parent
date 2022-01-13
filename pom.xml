@@ -25,6 +25,7 @@
         <module>escanor-gateway</module>
         <module>escanor-multids</module>
         <module>escanor-rabbitmq</module>
+        <module>escanor-core</module>
     </modules>
 
     <dependencies>
