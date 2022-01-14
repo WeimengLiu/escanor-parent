@@ -35,3 +35,5 @@ spring:
       connection-timeout: 30000
       idle-timeout: 120000
       supports: '6438'
+  devtools:
+    add-properties: false

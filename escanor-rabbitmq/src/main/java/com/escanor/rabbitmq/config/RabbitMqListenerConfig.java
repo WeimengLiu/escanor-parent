@@ -1,7 +1,6 @@
 package com.escanor.rabbitmq.config;
 
 import brave.spring.rabbit.SpringRabbitTracing;
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.amqp.core.MessageListener;
@@ -120,7 +119,7 @@ public class RabbitMqListenerConfig implements RabbitListenerConfigurer {
     }
 
     private RabbitListenerEndpoint getRabbitMqListener(String id, MyMqProperties.MyMqListener listenerProperties) throws ClassNotFoundException {
-        String[] listenerParams = StringUtils.split(listenerProperties.getListenerHandler(), ":");
+        String[] listenerParams = listenerProperties.getListenerHandler().split(":", -1);
         String type = listenerParams[0];
         AbstractRabbitListenerEndpoint endpoint = null;
         if (LISTENER_TYPE.equalsIgnoreCase(type)) {

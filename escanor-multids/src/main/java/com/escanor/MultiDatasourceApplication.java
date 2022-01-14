@@ -1,4 +1,4 @@
-package com.escanor.multidatasource;
+package com.escanor;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.cloud.client.SpringCloudApplication;

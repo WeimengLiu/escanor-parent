@@ -7,6 +7,27 @@ spring:
     username: admin
     password: admin
     virtual-host: /test
+    host: 10.162.16.24
+    bindings:
+      auto:
+        defaultKey: auto
+        defaultQueue: test
+        mappers:
+          - code: 6447
+            queue: test6447
+    queue:
+      listeners:
+        testListener:
+          queueNames: test
+          minConsumer: 1
+          maxConsumer: 1
+          threadMaxSize: 1
+        test6447Listener:
+          queueNames: test6447
+          minConsumer: 1
+          maxConsumer: 1
+          threadMaxSize: 1
+      enableListener: true
   datasources:
     default:
       name: default
@@ -37,6 +58,3 @@ spring:
       supports: '6438'
   sleuth:
     default-logging-pattern-enabled: true
-logging:
-  file:
-    path: logs

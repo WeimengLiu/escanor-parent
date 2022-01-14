@@ -19,6 +19,7 @@
         <maven.compiler.target>8</maven.compiler.target>
         <caffeine.version>3.0.5</caffeine.version>
         <commonslang3.version>3.12.0</commonslang3.version>
+        <jackson.version>2.11.4</jackson.version>
     </properties>
 
     <modules>
@@ -44,6 +45,17 @@
                 <version>Hoxton.SR12</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-web</artifactId>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-starter-tomcat</artifactId>
+                    </exclusion>
+                </exclusions>
+                <version>2.3.12.RELEASE</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -8,7 +8,7 @@
     <!--日志文件保存路径-->
     <springProperty scope="context" name="logPath" source="logging.file.path" defaultValue="logs"/>
     <!--应用名称-->
-    <springProperty scope="context" name="appName" source="spring.application.name" defaultValue="springBoot"/>
+    <springProperty scope="context" name="appName" source="spring.application.name" defaultValue="multids"/>
     <property name="LOG_LEVEL_PATTERN" value="-%5p [${appName},%X{X-B3-TraceId},%X{X-B3-SpanId}]"/>
     <property name="CONSOLE_LOG_PATTERN"
               value="${CONSOLE_LOG_PATTERN:-%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>
