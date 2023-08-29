@@ -1,8 +1,11 @@
 package com.escanor.gateway.security.config;
 
 import com.escanor.gateway.security.matcher.PermitUrlMatcher;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
@@ -17,9 +20,11 @@ import org.springframework.util.StringUtils;
 import java.util.List;
 
 @Configuration
-public class WebSecurityConfig {
+public class WebSecurityConfig implements ApplicationContextAware {
 
     private PermitUrlMatcher permitUrlMatcher;
+
+    private ApplicationContext context;
 
     @Autowired
     public void setPermitUrlMatcher(PermitUrlMatcher permitUrlMatcher) {
@@ -45,12 +50,17 @@ public class WebSecurityConfig {
                 .matchers(permitUrlMatcher).permitAll()
                 .anyExchange().authenticated()
                 .and()
-                .logout()
-                .and()
                 .httpBasic()
                 .and()
                 .csrf().disable()
+                .oauth2Login()
+                .and()
                 .exceptionHandling();
         return http.build();
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.context = applicationContext;
     }
 }

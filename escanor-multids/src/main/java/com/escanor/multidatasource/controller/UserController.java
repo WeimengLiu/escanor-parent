@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 public class UserController {
 
@@ -17,7 +19,7 @@ public class UserController {
     }
 
     @RequestMapping("/user/{code}/{id}")
-    public UserEntity findById(@PathVariable(name = "code") String code, @PathVariable(name = "id") Long id) {
+    public UserEntity findById(HttpServletRequest request, @PathVariable(name = "code") String code, @PathVariable(name = "id") Long id) {
         ContextHolder.setCode(code);
         return userService.findById(id);
     }
