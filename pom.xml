@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.3.12.RELEASE</version>
+        <version>2.7.18</version>
     </parent>
     <groupId>com.escanor</groupId>
     <artifactId>escanor-parent</artifactId>
@@ -19,7 +19,8 @@
         <maven.compiler.target>8</maven.compiler.target>
         <caffeine.version>3.0.5</caffeine.version>
         <commonslang3.version>3.12.0</commonslang3.version>
-        <jackson.version>2.11.4</jackson.version>
+        <!--<jackson.version>2.11.4</jackson.version>-->
+        <latest.powerjob.version>4.3.9</latest.powerjob.version>
     </properties>
 
     <modules>
@@ -27,6 +28,7 @@
         <module>escanor-multids</module>
         <module>escanor-rabbitmq</module>
         <module>escanor-core</module>
+        <module>escanor-job</module>
     </modules>
 
     <dependencies>
@@ -42,7 +44,7 @@
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
-                <version>Hoxton.SR12</version>
+                <version>2021.0.9</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

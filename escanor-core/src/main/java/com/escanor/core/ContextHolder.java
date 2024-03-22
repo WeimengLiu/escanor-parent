@@ -17,7 +17,7 @@ public class ContextHolder {
         return CODE.get();
     }
 
-    public static void setCode(String bankCode) {
-        CODE.set(bankCode);
+    public static void setCode(String code) {
+        CODE.set(code);
     }
 }

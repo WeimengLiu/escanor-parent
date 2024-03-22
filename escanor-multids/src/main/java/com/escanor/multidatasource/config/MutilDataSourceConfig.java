@@ -2,7 +2,7 @@ package com.escanor.multidatasource.config;
 
 import com.escanor.multidatasource.repository.MyRouteDataSource;
 import com.zaxxer.hikari.HikariDataSource;
-import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;

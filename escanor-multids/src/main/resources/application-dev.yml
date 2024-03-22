@@ -11,23 +11,26 @@ spring:
     bindings:
       auto:
         defaultKey: auto
-        defaultQueue: test
+        defaultQueue: auto
         mappers:
           - code: 6447
-            queue: test6447
+            queue: auto6447
     queue:
       listeners:
         testListener:
-          queueNames: test
+          queueNames: auto
           minConsumer: 1
           maxConsumer: 1
           threadMaxSize: 1
         test6447Listener:
-          queueNames: test6447
+          queueNames: auto6447
           minConsumer: 1
           maxConsumer: 1
           threadMaxSize: 1
       enableListener: true
+    template:
+      exchange: auto
+      routing-key: auto
   datasources:
     default:
       name: default
