@@ -56,6 +56,10 @@
             <artifactId>powerjob-worker-spring-boot-starter</artifactId>
             <version>${latest.powerjob.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
     </dependencies>
 
     <properties>
@@ -68,6 +72,32 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+
+                <configuration>
+                    <image>
+                        <!--配置镜像名称-->
+                        <name>wmliu.server-a.com:9443/escanor/${project.name}:${project.version}</name>
+                        <!--镜像打包完成后自动推送到镜像仓库-->
+                        <publish>true</publish>
+                        <tags>wmliu.server-a.com:9443/escanor/${project.name}:latest
+                        </tags>
+                    </image>
+                    <docker>
+                        <!--Docker远程管理地址-->
+                        <host>tcp://192.168.50.126:2375</host>
+                        <!--不使用TLS访问-->
+                        <tlsVerify>false</tlsVerify>
+                        <!--Docker推送镜像仓库配置-->
+                        <publishRegistry>
+                            <!--推送镜像仓库用户名-->
+                            <username>wmliu</username>
+                            <!--推送镜像仓库密码-->
+                            <password>WAYNEislwm@16</password>
+                            <!--推送镜像仓库地址-->
+                            <url>https://wmliu.server-a.com:9443</url>
+                        </publishRegistry>
+                    </docker>
+                </configuration>
             </plugin>
             <!--docker的操作-->
             <plugin>
@@ -79,8 +109,8 @@
                     <dockerDirectory>src/main/docker</dockerDirectory>
                     <imageTags>
                         <!--suppress UnresolvedMavenProperty -->
-                        <imageTag>${build.time}</imageTag>
-                        <!--<imageTag>latest</imageTag>-->
+                        <!--<imageTag>${build.time}</imageTag>-->
+                        <imageTag>latest</imageTag>
                     </imageTags>
                     <resources>
                         <resource>

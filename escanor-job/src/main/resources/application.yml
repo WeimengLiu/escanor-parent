@@ -4,7 +4,7 @@ spring:
   application:
     name: escanor-job
   profiles:
-    active: dev
+    active: docker
   cloud:
     gateway:
       metrics:
@@ -26,4 +26,15 @@ spring:
         profile-separator: '::'
         format: yaml
         fail-fast: false
-      host: localhost
+      host: 192.168.50.126
+
+---
+spring:
+  cloud:
+    consul:
+      host: host.docker.internal
+      discovery:
+        ip-address: 127.0.0.1
+  config:
+    activate:
+      on-profile: docker

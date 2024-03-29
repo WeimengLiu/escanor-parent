@@ -13,6 +13,8 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
+    <name>excanor</name>
+
     <properties>
         <docker.image.prefix>escanor</docker.image.prefix>
         <maven.compiler.source>8</maven.compiler.source>
@@ -21,6 +23,10 @@
         <commonslang3.version>3.12.0</commonslang3.version>
         <!--<jackson.version>2.11.4</jackson.version>-->
         <latest.powerjob.version>4.3.9</latest.powerjob.version>
+        <docker.username>wmliu</docker.username>
+        <docker.password>WAYNEislwm@16</docker.password>
+        <docker.registry.url>https://wmliu.server-a.com:9443</docker.registry.url>
+
     </properties>
 
     <modules>
@@ -29,6 +35,7 @@
         <module>escanor-rabbitmq</module>
         <module>escanor-core</module>
         <module>escanor-job</module>
+
     </modules>
 
     <dependencies>

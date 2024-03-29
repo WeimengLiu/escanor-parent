@@ -44,7 +44,7 @@
         <include resource="log/logback-dev.xml"/>
     </springProfile>
     <springProfile name="docker">
-        <include resource="log/logback-docker.xml"/>
+        <include resource="log/logback-dev.xml"/>
     </springProfile>
 
 
