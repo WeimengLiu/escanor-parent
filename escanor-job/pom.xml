@@ -69,56 +69,60 @@
     </properties>
     <build>
         <plugins>
-            <plugin>
+            <!--<plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
 
                 <configuration>
                     <image>
-                        <!--配置镜像名称-->
+                        &lt;!&ndash;配置镜像名称&ndash;&gt;
                         <name>wmliu.server-a.com:9443/escanor/${project.name}:${project.version}</name>
-                        <!--镜像打包完成后自动推送到镜像仓库-->
+                        &lt;!&ndash;镜像打包完成后自动推送到镜像仓库&ndash;&gt;
                         <publish>true</publish>
                         <tags>wmliu.server-a.com:9443/escanor/${project.name}:latest
                         </tags>
                     </image>
                     <docker>
-                        <!--Docker远程管理地址-->
+                        &lt;!&ndash;Docker远程管理地址&ndash;&gt;
                         <host>tcp://192.168.50.126:2375</host>
-                        <!--不使用TLS访问-->
+                        &lt;!&ndash;不使用TLS访问&ndash;&gt;
                         <tlsVerify>false</tlsVerify>
-                        <!--Docker推送镜像仓库配置-->
+                        &lt;!&ndash;Docker推送镜像仓库配置&ndash;&gt;
                         <publishRegistry>
-                            <!--推送镜像仓库用户名-->
+                            &lt;!&ndash;推送镜像仓库用户名&ndash;&gt;
                             <username>wmliu</username>
-                            <!--推送镜像仓库密码-->
+                            &lt;!&ndash;推送镜像仓库密码&ndash;&gt;
                             <password>WAYNEislwm@16</password>
-                            <!--推送镜像仓库地址-->
+                            &lt;!&ndash;推送镜像仓库地址&ndash;&gt;
                             <url>https://wmliu.server-a.com:9443</url>
                         </publishRegistry>
                     </docker>
                 </configuration>
-            </plugin>
+            </plugin>-->
             <!--docker的操作-->
             <plugin>
                 <groupId>com.spotify</groupId>
-                <artifactId>docker-maven-plugin</artifactId>
-                <version>1.2.2</version>
+                <artifactId>dockerfile-maven-plugin</artifactId>
+                <version>1.4.13</version>
+                <executions>
+                    <execution>
+                        <id>default</id>
+                        <goals>
+                            <goal>build</goal>
+                            <goal>push</goal>
+                        </goals>
+                    </execution>
+                </executions>
                 <configuration>
-                    <imageName>${docker.image.prefix}/${project.artifactId}</imageName>
-                    <dockerDirectory>src/main/docker</dockerDirectory>
-                    <imageTags>
-                        <!--suppress UnresolvedMavenProperty -->
-                        <!--<imageTag>${build.time}</imageTag>-->
-                        <imageTag>latest</imageTag>
-                    </imageTags>
-                    <resources>
-                        <resource>
-                            <targetPath>/</targetPath>
-                            <directory>${project.build.directory}</directory>
-                            <include>${project.build.finalName}.jar</include>
-                        </resource>
-                    </resources>
+                    <repository>${dockerfile.repository}/${docker.image.prefix}/${project.name}</repository>
+                    <tag>${project.version}</tag>
+                    <tag>latest</tag>
+                    <username>wmliu</username>
+                    <password>WAYNEislwm@16</password>
+                    <buildArgs>
+                        <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+                        <IMAGE_HOST>${docker.registry.url}</IMAGE_HOST>
+                    </buildArgs>
                 </configuration>
             </plugin>
             <plugin>

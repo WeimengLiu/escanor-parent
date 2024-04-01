@@ -26,6 +26,7 @@
         <docker.username>wmliu</docker.username>
         <docker.password>WAYNEislwm@16</docker.password>
         <docker.registry.url>https://wmliu.server-a.com:9443</docker.registry.url>
+        <dockerfile.repository>wmliu.server-a.com:9443</dockerfile.repository>
 
     </properties>
 

@@ -4,11 +4,8 @@ spring:
   application:
     name: escanor-job
   profiles:
-    active: docker
+    active: dev
   cloud:
-    gateway:
-      metrics:
-        enabled: true
     consul:
       port: 8500
       discovery:
@@ -32,9 +29,9 @@ spring:
 spring:
   cloud:
     consul:
-      host: host.docker.internal
+      host: consul
       discovery:
-        ip-address: 127.0.0.1
+        ip-address: powerjob-client
   config:
     activate:
       on-profile: docker
