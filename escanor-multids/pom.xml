@@ -5,11 +5,10 @@
 	<parent>
 		<groupId>com.escanor</groupId>
 		<artifactId>escanor-parent</artifactId>
-		<version>1.0-SNAPSHOT</version>
+		<version>1.0-RELEASE</version>
 	</parent>
 
 	<artifactId>escanor-multids</artifactId>
-	<version>1.0-SNAPSHOT</version>
 	<name>escanor-multids</name>
 	<description>escanor-multids</description>
 	<properties>
@@ -19,12 +18,12 @@
 		<dependency>
 			<groupId>com.escanor</groupId>
 			<artifactId>escanor-core</artifactId>
-			<version>1.0-SNAPSHOT</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.escanor</groupId>
 			<artifactId>escanor-rabbitmq</artifactId>
-			<version>1.0-SNAPSHOT</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

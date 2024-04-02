@@ -28,7 +28,7 @@
     <parent>
         <groupId>com.escanor</groupId>
         <artifactId>escanor-parent</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0-RELEASE</version>
     </parent>
 
     <groupId>com.wmliu.job</groupId>
@@ -69,11 +69,11 @@
     </properties>
     <build>
         <plugins>
-            <!--<plugin>
+            <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
 
-                <configuration>
+                <!--<configuration>
                     <image>
                         &lt;!&ndash;配置镜像名称&ndash;&gt;
                         <name>wmliu.server-a.com:9443/escanor/${project.name}:${project.version}</name>
@@ -97,25 +97,41 @@
                             <url>https://wmliu.server-a.com:9443</url>
                         </publishRegistry>
                     </docker>
-                </configuration>
-            </plugin>-->
+                </configuration>-->
+            </plugin>
             <!--docker的操作-->
             <plugin>
                 <groupId>com.spotify</groupId>
                 <artifactId>dockerfile-maven-plugin</artifactId>
                 <version>1.4.13</version>
                 <executions>
+
                     <execution>
-                        <id>default</id>
+                        <id>build-tag-push-version</id>
+                        <phase>package</phase>
                         <goals>
                             <goal>build</goal>
+                            <!--<goal>tag</goal>-->
                             <goal>push</goal>
                         </goals>
+                        <configuration>
+                            <tag>${project.version}</tag>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>tag-push-latest</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>tag</goal>
+                            <goal>push</goal>
+                        </goals>
+                        <configuration>
+                            <tag>latest</tag>
+                        </configuration>
                     </execution>
                 </executions>
                 <configuration>
                     <repository>${dockerfile.repository}/${docker.image.prefix}/${project.name}</repository>
-                    <tag>${project.version}</tag>
                     <tag>latest</tag>
                     <username>wmliu</username>
                     <password>WAYNEislwm@16</password>
@@ -136,7 +152,7 @@
                         </goals>
                         <configuration>
                             <name>build.time</name>
-                            <pattern>yyyy-MM-dd.HHmmss</pattern>
+                            <pattern>yyyyMMdd.HHmmss</pattern>
                             <locale>en_US</locale>
                             <timeZone>GMT+8</timeZone>
                         </configuration>
