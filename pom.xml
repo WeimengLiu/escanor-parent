@@ -27,6 +27,7 @@
         <docker.password>WAYNEislwm@16</docker.password>
         <docker.registry.url>https://wmliu.server-a.com:9443</docker.registry.url>
         <dockerfile.repository>wmliu.server-a.com:9443</dockerfile.repository>
+        <spring.boot.version>2.7.18</spring.boot.version>
     </properties>
 
     <modules>
@@ -69,7 +70,7 @@
                         <artifactId>spring-boot-starter-tomcat</artifactId>
                     </exclusion>
                 </exclusions>
-                <version>2.3.12.RELEASE</version>
+                <version>${spring.boot.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
