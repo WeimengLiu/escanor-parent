@@ -1,12 +1,13 @@
-package com.wmliu.job;
+package com.escanor;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.SpringCloudApplication;
 
 @SpringBootApplication
-public class JobApplication {
+public class GatewayApplication {
     public static void main(String[] args) {
-        SpringApplication.run(JobApplication.class, args);
+        SpringApplication.run(GatewayApplication.class, args);
     }
 }
 
