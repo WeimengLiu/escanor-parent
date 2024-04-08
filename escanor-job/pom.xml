@@ -31,7 +31,6 @@
         <version>1.0-RELEASE</version>
     </parent>
 
-    <groupId>com.wmliu.job</groupId>
     <artifactId>escanor-job</artifactId>
 
     <dependencies>
