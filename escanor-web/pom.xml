@@ -53,11 +53,16 @@
         <dependency>
             <groupId>com.escanor</groupId>
             <artifactId>escanor-core</artifactId>
-            <version>1.0-RELEASE</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-orm</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commonslang3.version}</version>
         </dependency>
     </dependencies>
 

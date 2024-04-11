@@ -36,6 +36,7 @@
         <version.xnio>3.8.13.Final</version.xnio>
         <modelmapper.version>3.2.0</modelmapper.version>
         <caffeine.version>3.1.8</caffeine.version>
+        <jjwt.version>0.12.5</jjwt.version>
     </properties>
 
     <modules>

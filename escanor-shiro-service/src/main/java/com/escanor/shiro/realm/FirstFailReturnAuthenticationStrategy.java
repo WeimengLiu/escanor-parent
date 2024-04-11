@@ -20,27 +20,24 @@
  * SOFTWARE.
  */
 
-package com.escanor.user.controller;
+package com.escanor.shiro.realm;
 
-import com.escanor.jpa.utils.ModelMapperUtils;
-import com.escanor.user.dto.UserInfoDto;
-import com.escanor.user.service.UserInfoService;
-import org.springframework.web.bind.annotation.*;
+import com.escanor.shiro.exception.WrapAuthenticationException;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.AuthenticationInfo;
+import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.pam.AbstractAuthenticationStrategy;
+import org.apache.shiro.realm.Realm;
 
-
-@RestController
-@RequestMapping("/user")
-public class UserController {
-
-    final UserInfoService userInfoService;
-
-    public UserController(UserInfoService userInfoService) {
-        this.userInfoService = userInfoService;
+public class FirstFailReturnAuthenticationStrategy extends AbstractAuthenticationStrategy {
+    @Override
+    public AuthenticationInfo afterAttempt(Realm realm, AuthenticationToken token, AuthenticationInfo singleRealmInfo, AuthenticationInfo aggregateInfo, Throwable t) throws AuthenticationException {
+        if (null != t) {
+            if (t instanceof AuthenticationException) {
+                throw new WrapAuthenticationException(t);
+            }
+            throw new AuthenticationException("Authentication Fail", t);
+        }
+        return super.afterAttempt(realm, token, singleRealmInfo, aggregateInfo, t);
     }
-
-    @GetMapping("/findByUserName")
-    public UserInfoDto findByUserName(@RequestParam("userName") String userName) {
-        return ModelMapperUtils.map(userInfoService.findByUserName(userName), UserInfoDto.class);
-    }
-
 }

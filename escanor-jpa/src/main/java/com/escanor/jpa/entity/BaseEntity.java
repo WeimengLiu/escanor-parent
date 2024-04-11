@@ -36,7 +36,6 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.Optional;
 
-@EqualsAndHashCode
 @Data
 @MappedSuperclass
 public abstract class BaseEntity implements Auditable<String, Integer, LocalDateTime>, Serializable, Persistable<Integer> {

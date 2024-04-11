@@ -24,8 +24,10 @@ package com.escanor;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
+@EnableFeignClients
 public class ShiroServiceApplication {
     public static void main(String[] args) {
         SpringApplication.run(ShiroServiceApplication.class, args);

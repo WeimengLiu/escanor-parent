@@ -20,27 +20,31 @@
  * SOFTWARE.
  */
 
-package com.escanor.user.controller;
+package com.escanor.shiro.filters;
 
-import com.escanor.jpa.utils.ModelMapperUtils;
-import com.escanor.user.dto.UserInfoDto;
-import com.escanor.user.service.UserInfoService;
-import org.springframework.web.bind.annotation.*;
+import lombok.Builder;
+import org.apache.shiro.web.util.RequestPairSource;
 
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 
-@RestController
-@RequestMapping("/user")
-public class UserController {
+public class SimpleRequestPairSource implements RequestPairSource {
 
-    final UserInfoService userInfoService;
+    private final ServletRequest servletRequest;
+    private final ServletResponse servletResponse;
 
-    public UserController(UserInfoService userInfoService) {
-        this.userInfoService = userInfoService;
+    public SimpleRequestPairSource(ServletRequest servletRequest, ServletResponse servletResponse) {
+        this.servletRequest = servletRequest;
+        this.servletResponse = servletResponse;
     }
 
-    @GetMapping("/findByUserName")
-    public UserInfoDto findByUserName(@RequestParam("userName") String userName) {
-        return ModelMapperUtils.map(userInfoService.findByUserName(userName), UserInfoDto.class);
+    @Override
+    public ServletRequest getServletRequest() {
+        return servletRequest;
     }
 
+    @Override
+    public ServletResponse getServletResponse() {
+        return servletResponse;
+    }
 }

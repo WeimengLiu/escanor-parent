@@ -20,27 +20,14 @@
  * SOFTWARE.
  */
 
-package com.escanor.user.controller;
+package com.escanor.core.annotation;
 
-import com.escanor.jpa.utils.ModelMapperUtils;
-import com.escanor.user.dto.UserInfoDto;
-import com.escanor.user.service.UserInfoService;
-import org.springframework.web.bind.annotation.*;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-
-@RestController
-@RequestMapping("/user")
-public class UserController {
-
-    final UserInfoService userInfoService;
-
-    public UserController(UserInfoService userInfoService) {
-        this.userInfoService = userInfoService;
-    }
-
-    @GetMapping("/findByUserName")
-    public UserInfoDto findByUserName(@RequestParam("userName") String userName) {
-        return ModelMapperUtils.map(userInfoService.findByUserName(userName), UserInfoDto.class);
-    }
-
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface IgnoreWrapResponse {
 }

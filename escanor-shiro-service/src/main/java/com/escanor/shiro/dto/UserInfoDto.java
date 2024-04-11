@@ -23,14 +23,43 @@
 package com.escanor.shiro.dto;
 
 import com.escanor.core.dto.BaseDto;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import com.escanor.core.util.CollectionUtils;
+import lombok.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserInfoDto extends BaseDto {
+
+    static final String KEY_USERNAME = "username";
+    //static final String KEY_PASSWORD = "password";
+    static final String KEY_PERMS = "perms";
+    static final String KEY_ROLE = "role";
+
+
     private String username;
     private String password;
     private String perms;
     private String role;
+
+    public static UserInfoDto fromJwtClaims(Map<String, Object> claims) {
+        if (CollectionUtils.isNotEmpty(claims)) {
+            return UserInfoDto.builder().username((String) claims.get(KEY_USERNAME)).perms((String) claims.get(KEY_PERMS)).role((String) claims.get(KEY_ROLE)).build();
+        }
+        return null;
+    }
+
+    public Map<String, Object> toJwtClaims() {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put(KEY_USERNAME, username);
+        //claims.put(KEY_PASSWORD, password);
+        claims.put(KEY_PERMS, perms);
+        claims.put(KEY_ROLE, role);
+        return claims;
+    }
 }

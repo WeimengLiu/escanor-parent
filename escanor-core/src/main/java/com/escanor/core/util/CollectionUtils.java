@@ -23,6 +23,7 @@
 package com.escanor.core.util;
 
 import java.util.Collection;
+import java.util.Map;
 
 public abstract class CollectionUtils {
     public static boolean isEmpty(Collection<?> collection) {
@@ -30,6 +31,14 @@ public abstract class CollectionUtils {
     }
 
     public static boolean isNotEmpty(Collection<?> collection) {
+        return !isEmpty(collection);
+    }
+
+    public static boolean isEmpty(Map<?, ?> map) {
+        return null == map || map.isEmpty();
+    }
+
+    public static boolean isNotEmpty(Map<?, ?> collection) {
         return !isEmpty(collection);
     }
 }

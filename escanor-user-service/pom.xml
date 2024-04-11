@@ -53,12 +53,12 @@
         <dependency>
             <groupId>com.escanor</groupId>
             <artifactId>escanor-web</artifactId>
-            <version>1.0-RELEASE</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.escanor</groupId>
             <artifactId>escanor-jpa</artifactId>
-            <version>1.0-RELEASE</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>

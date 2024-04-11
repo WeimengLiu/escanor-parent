@@ -58,9 +58,7 @@ public class ExceptionHandlerAdvice {
     ErrorResponse<?> handleBadRequest(HttpServletRequest req, ResponseException ce) {
         logger.error("接口处理发生异常，接口路径为：{}", req.getRequestURI());
         logger.error("ResponseException：", ce);
-        ErrorResponse<?> data = new ErrorResponse<>();
-        data.setMessage(ce.getMessage());
-        return data;
+        return ErrorResponse.fromErrorMessage(ce.getMessage());
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -69,15 +67,13 @@ public class ExceptionHandlerAdvice {
     Response<?> handleBadRequest(HttpServletRequest req, MethodArgumentNotValidException ex) {
         logger.error("接口处理发生异常，接口路径为：{}", req.getRequestURI());
         logger.error("数据校验异常：", ex);
-        Response<?> defaultResponse = new Response<>(ResponseCode.ERROR);
         StringBuilder sb = new StringBuilder();
         List<ObjectError> errors = ex.getBindingResult().getAllErrors();
         if (CollectionUtils.isNotEmpty(errors)) {
             errors.forEach(error -> sb.append("[").append(error.getDefaultMessage()).append("] "));
         }
         //defaultResponse.setData(sb.toString());
-        defaultResponse.setMessage(sb.toString());
-        return defaultResponse;
+        return ErrorResponse.fromErrorMessage(sb.toString());
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -86,9 +82,7 @@ public class ExceptionHandlerAdvice {
     Response<?> handleBadRequest(HttpServletRequest req, MissingServletRequestParameterException ex) {
         logger.error("接口处理发生异常，接口路径为：{}", req.getRequestURI());
         logger.error("请求缺少关键参数：", ex);
-        Response<?> defaultResponse = new Response<>(ResponseCode.ERROR);
-        defaultResponse.setMessage("请求缺少关键参数：[" + ex.getParameterName() + "]");
-        return defaultResponse;
+        return ErrorResponse.fromErrorMessage("请求缺少关键参数：[" + ex.getParameterName() + "]");
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -109,10 +103,7 @@ public class ExceptionHandlerAdvice {
                 message = se.getMessage();
             }
         }
-        Response<String> defaultResponse = new Response<>(ResponseCode.ERROR);
-        defaultResponse.setData(ex.getMessage());
-        defaultResponse.setMessage(message);
-        return defaultResponse;
+        return ErrorResponse.fromErrorMessage(message);
     }
 
     /**
@@ -136,9 +127,7 @@ public class ExceptionHandlerAdvice {
                 logger.error("error:", e);
             }
         }
-        Response<String> defaultResponse = new Response<>(ResponseCode.ERROR);
-        defaultResponse.setMessage("报文格式错误，无法解析");
-        return defaultResponse;
+        return ErrorResponse.fromErrorMessage("报文格式错误，无法解析");
     }
 
     /**
@@ -150,8 +139,6 @@ public class ExceptionHandlerAdvice {
     Response<?> handleBadRequest(HttpServletRequest req, ObjectOptimisticLockingFailureException ex) {
         logger.error("接口处理发生异常，接口路径为：{}", req.getRequestURI());
         logger.error("后台程序异常：", ex);
-        Response<String> defaultResponse = new Response<>(ResponseCode.ERROR);
-        defaultResponse.setMessage("数据已被更新或处理,请刷新页面");
-        return defaultResponse;
+        return ErrorResponse.fromErrorMessage("数据已被更新或处理,请刷新页面");
     }
 }

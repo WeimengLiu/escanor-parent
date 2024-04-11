@@ -22,16 +22,18 @@
 
 package com.escanor.web.common;
 
+import com.escanor.core.common.CommonHttpHeader;
 import com.escanor.core.common.Response;
 import com.escanor.core.common.SuccessResponse;
 import com.escanor.core.exception.ResponseException;
-import com.escanor.web.common.annotation.IgnoreWrapResponse;
+import com.escanor.core.annotation.IgnoreWrapResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.MethodParameter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
@@ -65,6 +67,14 @@ public class WrapResponseHandlerAdvice implements ResponseBodyAdvice<Object> {
         }
         if (returnType.hasMethodAnnotation(IgnoreWrapResponse.class)) {
             return body;
+        }
+        //http header中有忽略包装响应标志，直接返回
+        HttpHeaders httpHeaders = request.getHeaders();
+        if (!httpHeaders.isEmpty()) {
+            String value  = httpHeaders.getFirst(CommonHttpHeader.IGNORE_WRAP_RESPONSE.header());
+            if (StringUtils.equals(value, CommonHttpHeader.IGNORE_WRAP_RESPONSE.value())) {
+                return body;
+            }
         }
         if (body == null) {
             if (null != returnType.getMethod()) {

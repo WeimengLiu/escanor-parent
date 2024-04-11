@@ -34,7 +34,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ApplicationReadyEventListener implements SmartApplicationListener {
 
-    final Log log = LogFactory.getLog(ApplicationReadyEventListener.class);
+    //final Log log = LogFactory.getLog(ApplicationReadyEventListener.class);
 
     @Override
     public boolean supportsEventType(Class<? extends ApplicationEvent> eventType) {
@@ -44,7 +44,7 @@ public class ApplicationReadyEventListener implements SmartApplicationListener {
     @Override
     public void onApplicationEvent(ApplicationEvent event) {
         if (event instanceof WebServerInitializedEvent) {
-            log.info("设置应用准备完成");
+            //log.info("设置应用准备完成");
             ContextHolder.setApplicationReady();
         }
     }

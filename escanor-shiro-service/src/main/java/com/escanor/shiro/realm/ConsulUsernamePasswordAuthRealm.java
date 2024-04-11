@@ -20,42 +20,32 @@
  * SOFTWARE.
  */
 
-package com.escanor.shiro.config;
+package com.escanor.shiro.realm;
 
-import org.apache.shiro.SecurityUtils;
+import com.escanor.shiro.token.ConsulUsernamePasswordToken;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.*;
-import org.apache.shiro.authz.AuthorizationInfo;
-import org.apache.shiro.authz.SimpleAuthorizationInfo;
-import org.apache.shiro.realm.AuthorizingRealm;
-import org.apache.shiro.subject.PrincipalCollection;
-import org.apache.shiro.subject.Subject;
+import org.apache.shiro.realm.AuthenticatingRealm;
 
-import java.util.HashSet;
-import java.util.Set;
+public class ConsulUsernamePasswordAuthRealm extends AuthenticatingRealm {
 
-public class AuthRealm extends AuthorizingRealm {
+    private final String username;
+    private final String password;
+
+    public ConsulUsernamePasswordAuthRealm(String username, String password) {
+        this.password = password;
+        this.username = username;
+        setAuthenticationTokenClass(ConsulUsernamePasswordToken.class);
+    }
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) {
-        String username = (String) token.getPrincipal();
-        if (!"consul".equals(username)) {
+        String inputUsername = (String) token.getPrincipal();
+        if (StringUtils.equals(username, inputUsername)) {
+            return new SimpleAuthenticationInfo(username, password, getName());
+        } else {
             throw new UnknownAccountException("账户不存在!");
         }
-        return new SimpleAuthenticationInfo(username, "consul", getName());
     }
 
-    @Override
-    protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        //获取当前登录对象
-        Subject subject = SecurityUtils.getSubject();
-        Account account = (Account) subject.getPrincipal();
-
-        //设置角色
-        Set<String> roles = new HashSet<>(account.getRoles());
-        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo(roles);
-
-        //设置权限
-        info.addStringPermissions(account.getStringPermissions());
-        return info;
-    }
 }

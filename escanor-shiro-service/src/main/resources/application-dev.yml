@@ -11,3 +11,13 @@ management:
   endpoint:
     health:
       show-details: always
+shiro:
+  enabled: true
+feign:
+  client:
+    config:
+      escanor-user-service:
+        connectTimeout: 5000
+        readTimeout: 5000
+        defaultRequestHeaders:
+          IgnoreWrapResponse: "true"

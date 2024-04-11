@@ -22,12 +22,13 @@
 
 package com.escanor.jpa.utils;
 
+import com.escanor.jpa.entity.BaseEntity;
 import org.modelmapper.ModelMapper;
 
 public class ModelMapperUtils {
     public static final ModelMapper MODEL_MAPPER = new ModelMapper();
 
-    public static <D> D map(Object source, Class<D> dClass) {
+    public static <D> D map(BaseEntity source, Class<D> dClass) {
         if (null == source) {
             return null;
         }

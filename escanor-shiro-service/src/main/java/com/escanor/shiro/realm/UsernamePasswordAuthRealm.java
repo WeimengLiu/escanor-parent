@@ -20,27 +20,28 @@
  * SOFTWARE.
  */
 
-package com.escanor.user.controller;
+package com.escanor.shiro.realm;
 
-import com.escanor.jpa.utils.ModelMapperUtils;
-import com.escanor.user.dto.UserInfoDto;
-import com.escanor.user.service.UserInfoService;
-import org.springframework.web.bind.annotation.*;
+import com.escanor.shiro.client.UserServiceClient;
+import com.escanor.shiro.dto.UserInfoDto;
+import org.apache.shiro.authc.*;
+import org.apache.shiro.realm.AuthenticatingRealm;
 
+public class UsernamePasswordAuthRealm extends AuthenticatingRealm {
 
-@RestController
-@RequestMapping("/user")
-public class UserController {
+    private final UserServiceClient userServiceClient;
 
-    final UserInfoService userInfoService;
-
-    public UserController(UserInfoService userInfoService) {
-        this.userInfoService = userInfoService;
+    public UsernamePasswordAuthRealm(UserServiceClient userServiceClient) {
+        this.userServiceClient = userServiceClient;
     }
 
-    @GetMapping("/findByUserName")
-    public UserInfoDto findByUserName(@RequestParam("userName") String userName) {
-        return ModelMapperUtils.map(userInfoService.findByUserName(userName), UserInfoDto.class);
+    @Override
+    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) {
+        String username = (String) token.getPrincipal();
+        UserInfoDto userInfoDto = userServiceClient.findByUserName(username);
+        if (null == userInfoDto) {
+            throw new UnknownAccountException("账户不存在!");
+        }
+        return new SimpleAuthenticationInfo(userInfoDto, userInfoDto.getPassword(), getName());
     }
-
 }

@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-package com.escanor.shiro.controller;
+package com.escanor.shiro.service.impl;
 
 import com.escanor.core.common.ErrorResponse;
 import com.escanor.core.common.Response;
@@ -33,38 +33,36 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
+import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.*;
 
-@RestController
-@RequestMapping
-public class AuthController {
+@Service
+public class AuthServiceImpl implements AuthService {
 
-    final AuthService authService;
-    public AuthController(AuthService authService) {
-        this.authService = authService;
+    private static final Log log = LogFactory.getLog(AuthServiceImpl.class);
+    final JwtTokenTemplate tokenTemplate;
+
+    public AuthServiceImpl(JwtTokenTemplate tokenTemplate) {
+        this.tokenTemplate = tokenTemplate;
     }
 
-    @GetMapping("/{url}")
-    public String redirect(@PathVariable("url") String url) {
-        return url;
-    }
-
-    @PostMapping("/login")
+    @Override
     public Response<?> login(String username, String password) {
-        return authService.login(username, password);
-    }
+        Assert.hasLength(username, "username not allow null");
+        Assert.hasLength(password, "password not allow null");
 
-    @PostMapping("/loginFromBrowser")
-    public Response<?> loginFromBrowser(String username, String password) {
-        Response<?> response = authService.login(username, password);
-        return response;
-    }
+        Subject subject = SecurityUtils.getSubject();
+        UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+        try {
+            subject.login(token);
+            UserInfoDto userInfoDto = (UserInfoDto) subject.getPrincipal();
 
+            String jwtToken = tokenTemplate.createJsonWebToken(userInfoDto.toJwtClaims(), String.valueOf(userInfoDto.getId()));
 
-    @RequestMapping("/unauth")
-    @ResponseBody
-    public String unauth() {
-        return "未授权没有访问权限";
+            return SuccessResponse.from(jwtToken, "login success");
+        } catch (Exception e) {
+            log.error("[" + username + "]" + " login fail", e);
+            return ErrorResponse.fromErrorMessage("login fail! please check username and password");
+        }
     }
 }

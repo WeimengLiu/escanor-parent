@@ -20,27 +20,12 @@
  * SOFTWARE.
  */
 
-package com.escanor.user.controller;
+package com.escanor.shiro.exception;
 
-import com.escanor.jpa.utils.ModelMapperUtils;
-import com.escanor.user.dto.UserInfoDto;
-import com.escanor.user.service.UserInfoService;
-import org.springframework.web.bind.annotation.*;
+import org.apache.shiro.authc.AuthenticationException;
 
-
-@RestController
-@RequestMapping("/user")
-public class UserController {
-
-    final UserInfoService userInfoService;
-
-    public UserController(UserInfoService userInfoService) {
-        this.userInfoService = userInfoService;
+public class WrapAuthenticationException extends AuthenticationException {
+    public WrapAuthenticationException(Throwable e) {
+        super(e);
     }
-
-    @GetMapping("/findByUserName")
-    public UserInfoDto findByUserName(@RequestParam("userName") String userName) {
-        return ModelMapperUtils.map(userInfoService.findByUserName(userName), UserInfoDto.class);
-    }
-
 }

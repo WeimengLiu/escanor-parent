@@ -20,27 +20,17 @@
  * SOFTWARE.
  */
 
-package com.escanor.user.controller;
+package com.escanor.shiro.client;
 
-import com.escanor.jpa.utils.ModelMapperUtils;
-import com.escanor.user.dto.UserInfoDto;
-import com.escanor.user.service.UserInfoService;
-import org.springframework.web.bind.annotation.*;
+import com.escanor.shiro.dto.UserInfoDto;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+@FeignClient(name = UserServiceClient.ESCANOR_USER_SERVICE_NAME)
+public interface UserServiceClient {
+    String ESCANOR_USER_SERVICE_NAME = "escanor-user-service";
 
-@RestController
-@RequestMapping("/user")
-public class UserController {
-
-    final UserInfoService userInfoService;
-
-    public UserController(UserInfoService userInfoService) {
-        this.userInfoService = userInfoService;
-    }
-
-    @GetMapping("/findByUserName")
-    public UserInfoDto findByUserName(@RequestParam("userName") String userName) {
-        return ModelMapperUtils.map(userInfoService.findByUserName(userName), UserInfoDto.class);
-    }
-
+    @RequestMapping("/user/findByUserName")
+    UserInfoDto findByUserName(@RequestParam("userName") String userName);
 }

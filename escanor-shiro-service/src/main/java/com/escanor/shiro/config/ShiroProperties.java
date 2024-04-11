@@ -20,27 +20,47 @@
  * SOFTWARE.
  */
 
-package com.escanor.user.controller;
+package com.escanor.shiro.config;
 
-import com.escanor.jpa.utils.ModelMapperUtils;
-import com.escanor.user.dto.UserInfoDto;
-import com.escanor.user.service.UserInfoService;
-import org.springframework.web.bind.annotation.*;
+import lombok.Data;
+import lombok.Getter;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+
+@ConfigurationProperties(prefix = "escanor.shiro")
+@Data
+public class ShiroProperties {
+    /**
+     * Jwt 签名密钥
+     */
+    private String secretKey = "Z29vZCBnb29kIHN0dWR5LCBkYXkgZGF5IHVwISBBcmUgeW91IG9rPyBhbmQgeW91LiAgRmluZSAsIFRoYW5rIHlvdS4gYnllIQ==";
+    /**
+     * token有效期，单位分钟
+     */
+    private Integer tokenTimeOut =24 * 60;
+
+    /**
+     * consul 检查使用
+     */
+   private User consulUser = new User("consul", "consul");
 
 
-@RestController
-@RequestMapping("/user")
-public class UserController {
+    @Getter
+    public static class User {
+        private String username;
+        private String password;
 
-    final UserInfoService userInfoService;
+        public User(String username, String password) {
+            this.username = username;
+            this.password = password;
+        }
 
-    public UserController(UserInfoService userInfoService) {
-        this.userInfoService = userInfoService;
-    }
+        public void setUsername(String username) {
+            this.username = username;
+        }
 
-    @GetMapping("/findByUserName")
-    public UserInfoDto findByUserName(@RequestParam("userName") String userName) {
-        return ModelMapperUtils.map(userInfoService.findByUserName(userName), UserInfoDto.class);
+        public void setPassword(String password) {
+            this.password = password;
+        }
     }
 
 }

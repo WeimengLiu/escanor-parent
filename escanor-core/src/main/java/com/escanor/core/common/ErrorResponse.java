@@ -23,11 +23,28 @@
 package com.escanor.core.common;
 
 public class ErrorResponse<T> extends Response<T> {
-    public ErrorResponse(T data) {
-        super(ResponseCode.ERROR, data);
+
+    public ErrorResponse(String message) {
+        super(ResponseCode.ERROR.getCode(), message, null);
     }
 
-    public ErrorResponse() {
-        super(ResponseCode.ERROR, null);
+    public ErrorResponse(int status, String message) {
+        super(status, message, null);
     }
+
+
+    public ErrorResponse() {
+        super(ResponseCode.ERROR.getCode(), ResponseCode.ERROR.getMessage(), null);
+    }
+
+    public static ErrorResponse<?> fromErrorMessage(String errorMsg) {
+        return new ErrorResponse<>(errorMsg);
+    }
+
+
+    public static ErrorResponse<?> fromCodeAndErrorMessage(int status, String errorMsg) {
+        return new ErrorResponse<>(status, errorMsg);
+    }
+
+
 }

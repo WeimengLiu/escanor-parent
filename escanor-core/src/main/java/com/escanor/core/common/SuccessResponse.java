@@ -22,12 +22,25 @@
 
 package com.escanor.core.common;
 
-public class SuccessResponse<T> extends Response<T>{
+public class SuccessResponse<T> extends Response<T> {
     public SuccessResponse(T data) {
         super(ResponseCode.SUCCESS, data);
     }
 
     public SuccessResponse() {
         super(ResponseCode.SUCCESS, null);
+    }
+
+    public SuccessResponse(T data, String message) {
+        super(ResponseCode.SUCCESS.getCode(), message, data);
+    }
+
+
+    public static <T> SuccessResponse<T> fromData(T data) {
+        return new SuccessResponse<>(data);
+    }
+
+    public static <T> SuccessResponse<T> from(T data, String message) {
+        return new SuccessResponse<>(data, message);
     }
 }

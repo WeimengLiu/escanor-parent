@@ -20,14 +20,10 @@
  * SOFTWARE.
  */
 
-package com.escanor.web.common.annotation;
+package com.escanor.shiro.service;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import com.escanor.core.common.Response;
 
-@Target(ElementType.METHOD)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface IgnoreWrapResponse {
+public interface AuthService {
+    Response<?> login(String username, String password);
 }

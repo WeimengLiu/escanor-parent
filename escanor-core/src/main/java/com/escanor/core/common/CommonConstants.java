@@ -20,27 +20,8 @@
  * SOFTWARE.
  */
 
-package com.escanor.user.controller;
+package com.escanor.core.common;
 
-import com.escanor.jpa.utils.ModelMapperUtils;
-import com.escanor.user.dto.UserInfoDto;
-import com.escanor.user.service.UserInfoService;
-import org.springframework.web.bind.annotation.*;
-
-
-@RestController
-@RequestMapping("/user")
-public class UserController {
-
-    final UserInfoService userInfoService;
-
-    public UserController(UserInfoService userInfoService) {
-        this.userInfoService = userInfoService;
-    }
-
-    @GetMapping("/findByUserName")
-    public UserInfoDto findByUserName(@RequestParam("userName") String userName) {
-        return ModelMapperUtils.map(userInfoService.findByUserName(userName), UserInfoDto.class);
-    }
-
+public class CommonConstants {
+    public static final String IGNORE_WRAP_RESPONSE_HEADER = "__IGNORE_WRAP_RESPONSE__";
 }

@@ -20,27 +20,24 @@
  * SOFTWARE.
  */
 
-package com.escanor.user.controller;
+package com.escanor.jpa.audit;
 
-import com.escanor.jpa.utils.ModelMapperUtils;
-import com.escanor.user.dto.UserInfoDto;
-import com.escanor.user.service.UserInfoService;
-import org.springframework.web.bind.annotation.*;
+import com.escanor.core.ContextHolder;
+import org.springframework.data.domain.AuditorAware;
+import org.springframework.lang.NonNullApi;
+import org.springframework.stereotype.Component;
 
+import java.util.Optional;
 
-@RestController
-@RequestMapping("/user")
-public class UserController {
-
-    final UserInfoService userInfoService;
-
-    public UserController(UserInfoService userInfoService) {
-        this.userInfoService = userInfoService;
+@Component
+public class EscanorAuditorAware implements AuditorAware<String> {
+    @Override
+    public Optional<String> getCurrentAuditor() {
+        String username = ContextHolder.getUsername();
+        if (null == username || username.isEmpty()) {
+            username = "system";
+        }
+        return Optional.of(username);
     }
-
-    @GetMapping("/findByUserName")
-    public UserInfoDto findByUserName(@RequestParam("userName") String userName) {
-        return ModelMapperUtils.map(userInfoService.findByUserName(userName), UserInfoDto.class);
-    }
-
 }
+

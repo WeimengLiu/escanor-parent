@@ -41,7 +41,7 @@
         <dependency>
             <groupId>com.escanor</groupId>
             <artifactId>escanor-core</artifactId>
-            <version>1.0-RELEASE</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
