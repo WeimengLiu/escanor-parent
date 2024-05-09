@@ -49,6 +49,7 @@
         <module>escanor-web</module>
         <module>escanor-jpa</module>
         <module>escanor-user-service</module>
+        <module>escanor-security-service</module>
 
     </modules>
 

@@ -27,10 +27,8 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(name = UserServiceClient.ESCANOR_USER_SERVICE_NAME)
+@FeignClient(name = ServerService.ESCANOR_USER_SERVICE)
 public interface UserServiceClient {
-    String ESCANOR_USER_SERVICE_NAME = "escanor-user-service";
-
     @RequestMapping("/user/findByUserName")
     UserInfoDto findByUserName(@RequestParam("userName") String userName);
 }

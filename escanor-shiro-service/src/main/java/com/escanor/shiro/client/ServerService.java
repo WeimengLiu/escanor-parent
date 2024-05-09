@@ -20,22 +20,13 @@
  * SOFTWARE.
  */
 
-package com.escanor.user.dao;
+package com.escanor.shiro.client;
 
-import com.escanor.user.entity.UserInfoEntity;
-import com.escanor.user.repository.UserInfoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+public interface ServerService {
 
-@Repository
-public class UserInfoDao {
-    private final UserInfoRepository userInfoRepository;
+    /**
+     * 用户信息服务
+     */
+    String ESCANOR_USER_SERVICE = "escanor-user-service";
 
-    public UserInfoDao(UserInfoRepository userInfoRepository) {
-        this.userInfoRepository = userInfoRepository;
-    }
-
-    public UserInfoEntity findByUserName(String userName) {
-        return userInfoRepository.findByUsername(userName);
-    }
 }

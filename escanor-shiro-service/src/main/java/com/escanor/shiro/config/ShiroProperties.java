@@ -24,6 +24,7 @@ package com.escanor.shiro.config;
 
 import lombok.Data;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix = "escanor.shiro")
@@ -44,6 +45,7 @@ public class ShiroProperties {
    private User consulUser = new User("consul", "consul");
 
 
+    @Setter
     @Getter
     public static class User {
         private String username;
@@ -54,13 +56,6 @@ public class ShiroProperties {
             this.password = password;
         }
 
-        public void setUsername(String username) {
-            this.username = username;
-        }
-
-        public void setPassword(String password) {
-            this.password = password;
-        }
     }
 
 }

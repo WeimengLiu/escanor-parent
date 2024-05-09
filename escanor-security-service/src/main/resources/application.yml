@@ -1,0 +1,26 @@
+spring:
+  config:
+    import: 'optional:consul:'
+  application:
+    name: escanor-security-service
+  profiles:
+    active: dev
+  cloud:
+    consul:
+      port: 8500
+      discovery:
+        prefer-ip-address: true
+        instance-id: ${spring.application.name}:${spring.cloud.client.ip-address}:${server.port}
+        health-check-interval: '300s'
+        health-check-tls-skip-verify: true
+        #tags: user.name=consul, user.password=consul
+        #scheme: https
+      config:
+        data-key: configuration
+        enabled: true
+        watch:
+          enabled: true
+        profile-separator: '::'
+        format: yaml
+        fail-fast: false
+      host: localhost
