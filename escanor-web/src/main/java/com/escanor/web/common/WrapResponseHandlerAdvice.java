@@ -40,6 +40,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
+import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -62,15 +63,15 @@ public class WrapResponseHandlerAdvice implements ResponseBodyAdvice<Object> {
     @Override
     public Object beforeBodyWrite(@Nullable Object body, MethodParameter returnType, MediaType selectedContentType, Class selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
         if (body == null) {
-            if (null != returnType.getMethod()) {
-                returnType.getMethod();
-                if (Collection.class.isAssignableFrom(returnType.getMethod().getReturnType())) {
+            Method method = returnType.getMethod();
+            if (null != method) {
+                if (Collection.class.isAssignableFrom(method.getReturnType())) {
                     body = EMPTY_LIST;
                     return Response.ok(body);
-                } else if (Page.class.isAssignableFrom(returnType.getMethod().getReturnType())) {
+                } else if (Page.class.isAssignableFrom(method.getReturnType())) {
                     body = new PageImpl<>(Collections.emptyList());
                     return Response.ok(body);
-                } else if (String.class.isAssignableFrom(returnType.getMethod().getReturnType())) {
+                } else if (String.class.isAssignableFrom(method.getReturnType())) {
                     return null;
                 }
             }

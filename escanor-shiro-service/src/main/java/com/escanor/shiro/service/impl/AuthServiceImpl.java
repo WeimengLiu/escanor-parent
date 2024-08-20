@@ -57,7 +57,7 @@ public class AuthServiceImpl implements AuthService {
 
             String jwtToken = tokenTemplate.createJsonWebToken(userInfoDto.toJwtClaims(), String.valueOf(userInfoDto.getId()));
 
-            return SuccessResponse.from(jwtToken, "login success");
+            return Response.ok(jwtToken, "login success");
         } catch (Exception e) {
             log.error("[" + username + "]" + " login fail", e);
             return Response.fail("login fail! please check username and password");

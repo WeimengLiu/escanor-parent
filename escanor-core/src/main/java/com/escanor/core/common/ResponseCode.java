@@ -36,9 +36,9 @@ public enum ResponseCode {
     ERROR(500, "请求失败")
     ;
 
-    private int code;
+    private final int code;
 
-    private String message;
+    private final String message;
 
     ResponseCode(int code, String message) {
         this.code =code;

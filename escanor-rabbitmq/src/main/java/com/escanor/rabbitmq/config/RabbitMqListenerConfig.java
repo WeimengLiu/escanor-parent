@@ -16,7 +16,6 @@ import org.springframework.amqp.rabbit.listener.RabbitListenerEndpoint;
 import org.springframework.amqp.rabbit.listener.RabbitListenerEndpointRegistrar;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.aop.support.AopUtils;
-import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -29,7 +28,10 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 @Configuration
 @EnableConfigurationProperties(MyMqProperties.class)
@@ -54,6 +56,18 @@ public class RabbitMqListenerConfig implements RabbitListenerConfigurer {
         this.messageHandlerMethodFactory = createDefaultMessageHandlerMethodFactory();
     }
 
+    private static ThreadPoolTaskExecutor getThreadPoolTaskExecutor(String queueName, MyMqProperties.MyMqListener listenerProperties) {
+        ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
+        taskExecutor.setMaxPoolSize(listenerProperties.getThreadMaxSize());
+        if (listenerProperties.getMaxConsumer() > listenerProperties.getThreadMaxSize()) {
+            taskExecutor.setMaxPoolSize(listenerProperties.getMaxConsumer() + 1);
+        }
+        taskExecutor.setCorePoolSize(listenerProperties.getMaxConsumer());
+        taskExecutor.setQueueCapacity(listenerProperties.getQueueCapacity());
+        taskExecutor.setThreadNamePrefix(queueName + "-");
+        taskExecutor.initialize();
+        return taskExecutor;
+    }
 
     @SneakyThrows
     @Override
@@ -75,7 +89,6 @@ public class RabbitMqListenerConfig implements RabbitListenerConfigurer {
         log.info("初始化RabbitMq Listeners结束");
     }
 
-
     private SimpleRabbitListenerContainerFactory createRabbitMqListenerContainerFactory(String queueName, MyMqProperties.MyMqListener listenerProperties) {
         SimpleRabbitListenerContainerFactory factory = springRabbitTracing.newSimpleRabbitListenerContainerFactory(connectionFactory);
         // 重连间隔时间
@@ -91,19 +104,6 @@ public class RabbitMqListenerConfig implements RabbitListenerConfigurer {
         //开启事务
         factory.setChannelTransacted(true);
         return factory;
-    }
-
-    private static ThreadPoolTaskExecutor getThreadPoolTaskExecutor(String queueName, MyMqProperties.MyMqListener listenerProperties) {
-        ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
-        taskExecutor.setMaxPoolSize(listenerProperties.getThreadMaxSize());
-        if (listenerProperties.getMaxConsumer() > listenerProperties.getThreadMaxSize()) {
-            taskExecutor.setMaxPoolSize(listenerProperties.getMaxConsumer() + 1);
-        }
-        taskExecutor.setCorePoolSize(listenerProperties.getMaxConsumer());
-        taskExecutor.setQueueCapacity(listenerProperties.getQueueCapacity());
-        taskExecutor.setThreadNamePrefix(queueName + "-");
-        taskExecutor.initialize();
-        return taskExecutor;
     }
 
     private void initConsumerListeners(RabbitListenerEndpointRegistrar registrar) throws ClassNotFoundException {
@@ -126,7 +126,7 @@ public class RabbitMqListenerConfig implements RabbitListenerConfigurer {
         MyMqProperties.ListenerType type = listenerHandler.getType();
         AbstractRabbitListenerEndpoint endpoint = null;
         if (MyMqProperties.ListenerType.LISTENER == type) {
-             endpoint = createSimpleRabbitListenerEndpoint(listenerHandler);
+            endpoint = createSimpleRabbitListenerEndpoint(listenerHandler);
         } else if (MyMqProperties.ListenerType.METHOD == type) {
             endpoint = createMethodRabbitListenerEndpoint(listenerHandler);
         } else {

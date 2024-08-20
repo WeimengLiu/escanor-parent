@@ -28,9 +28,6 @@ import java.util.Map;
  */
 @Slf4j
 public class JwtTokenTemplate {
-
-    public static final Logger logger = LoggerFactory.getLogger(JwtTokenTemplate.class);
-
     /**
      * 密钥
      */

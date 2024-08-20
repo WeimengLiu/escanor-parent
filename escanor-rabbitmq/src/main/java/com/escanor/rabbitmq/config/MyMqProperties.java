@@ -184,7 +184,7 @@ public class MyMqProperties {
 
     public enum ListenerType {
         LISTENER,
-        METHOD;
+        METHOD
     }
 
 }

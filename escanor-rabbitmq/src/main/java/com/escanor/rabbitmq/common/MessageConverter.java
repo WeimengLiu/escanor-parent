@@ -41,7 +41,7 @@ import java.util.UUID;
 @Component
 public class MessageConverter extends AbstractMessageConverter {
 
-    private ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper;
 
     public MessageConverter() {
         objectMapper = new ObjectMapper();
