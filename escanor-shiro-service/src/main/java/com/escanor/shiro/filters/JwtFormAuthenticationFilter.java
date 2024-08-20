@@ -22,8 +22,7 @@
 
 package com.escanor.shiro.filters;
 
-import com.escanor.core.common.ErrorResponse;
-import com.escanor.core.common.SuccessResponse;
+import com.escanor.core.common.Response;
 import com.escanor.core.exception.ResponseException;
 import com.escanor.shiro.dto.UserInfoDto;
 import com.escanor.shiro.exception.AuthenticationFailCode;
@@ -69,7 +68,7 @@ public class JwtFormAuthenticationFilter extends FormAuthenticationFilter {
         String jwtToken = tokenTemplate.createJsonWebToken(userInfoDto.toJwtClaims(), String.valueOf(userInfoDto.getId()));
         //页面登录，Token只放cookie中
         setCookie(jwtToken, request, response);
-        HttpResponseHelper.writeScOkResponse(response, SuccessResponse.from(userInfoDto.toJwtClaims(), "login success"));
+        HttpResponseHelper.writeScOkResponse(response, Response.ok(userInfoDto.toJwtClaims(), "login success"));
         //we handled the success response directly, prevent the chain from continuing:
         return false;
     }
@@ -83,7 +82,7 @@ public class JwtFormAuthenticationFilter extends FormAuthenticationFilter {
                 toUse = e.getCause();
             }
             AuthenticationFailCode authenticationFailCode = AuthenticationFailCode.from(toUse.getClass());
-            HttpResponseHelper.writeScOkResponse(response, ErrorResponse.fromCodeAndErrorMessage(authenticationFailCode.getCode(), authenticationFailCode.getMessage()));
+            HttpResponseHelper.writeScOkResponse(response, Response.fail(authenticationFailCode.getCode(), authenticationFailCode.getMessage()));
         } catch (IOException ex) {
             throw new ResponseException("write response fail", ex);
         }

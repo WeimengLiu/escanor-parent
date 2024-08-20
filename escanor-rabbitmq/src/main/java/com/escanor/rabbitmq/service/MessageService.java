@@ -32,15 +32,9 @@ public interface MessageService {
 
     boolean sendMsg(CommonMessage message);
 
-    //boolean sendMsgWithTopic(CommonMessage message);
-
-
     boolean sendMsgWithQueue(String queueName, CommonMessage message);
 
     void sendMsgAsyncWithQueue(String queueName, CommonMessage message);
 
-    //boolean sendMsgWithQueue(String destinationName, CommonMessage message);
-
-    //boolean sendMsgWithTopic(String message);
 
 }

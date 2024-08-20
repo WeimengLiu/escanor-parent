@@ -24,7 +24,6 @@ package com.escanor.user.dao;
 
 import com.escanor.user.entity.UserInfoEntity;
 import com.escanor.user.repository.UserInfoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository

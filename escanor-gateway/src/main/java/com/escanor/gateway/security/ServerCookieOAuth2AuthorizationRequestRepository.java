@@ -71,7 +71,7 @@ public class ServerCookieOAuth2AuthorizationRequestRepository implements ServerA
                 }
             }
         }
-        log.debug("Response cookies" + response.getCookies());
+        log.debug("Response cookies: {}" , response.getCookies());
     }
 
     @Override

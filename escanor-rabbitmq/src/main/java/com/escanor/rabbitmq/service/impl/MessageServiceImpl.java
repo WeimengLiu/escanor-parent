@@ -25,6 +25,7 @@ package com.escanor.rabbitmq.service.impl;
 import com.escanor.rabbitmq.common.CommonMessage;
 import com.escanor.rabbitmq.service.MessageService;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -53,7 +54,8 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public void sendMsgAsyncWithQueue(String queueName, CommonMessage message) {
-
+        SimpleAsyncTaskExecutor taskExecutor = new SimpleAsyncTaskExecutor();
+        taskExecutor.execute(() -> rabbitTemplate.convertAndSend(message));
     }
 
 }

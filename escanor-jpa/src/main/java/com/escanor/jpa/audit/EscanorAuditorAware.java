@@ -24,7 +24,6 @@ package com.escanor.jpa.audit;
 
 import com.escanor.core.ContextHolder;
 import org.springframework.data.domain.AuditorAware;
-import org.springframework.lang.NonNullApi;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;

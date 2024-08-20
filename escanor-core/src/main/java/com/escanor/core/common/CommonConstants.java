@@ -23,5 +23,8 @@
 package com.escanor.core.common;
 
 public class CommonConstants {
+    private CommonConstants() {
+        throw new IllegalStateException("Utility class");
+    }
     public static final String IGNORE_WRAP_RESPONSE_HEADER = "__IGNORE_WRAP_RESPONSE__";
 }

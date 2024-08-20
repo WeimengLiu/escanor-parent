@@ -25,7 +25,11 @@ package com.escanor.core.util;
 import java.util.Collection;
 import java.util.Map;
 
-public abstract class CollectionUtils {
+public class CollectionUtils {
+
+    private CollectionUtils() {
+        throw new IllegalStateException("Utility class");
+    }
     public static boolean isEmpty(Collection<?> collection) {
         return null == collection || collection.isEmpty();
     }

@@ -22,7 +22,7 @@
 
 package com.escanor.shiro.filters;
 
-import com.escanor.core.common.ErrorResponse;
+import com.escanor.core.common.Response;
 import com.escanor.core.exception.ResponseException;
 import com.escanor.shiro.exception.AuthenticationFailCode;
 import com.escanor.shiro.exception.WrapAuthenticationException;
@@ -62,19 +62,6 @@ public class JwtHttpAuthenticationFilter extends BearerHttpAuthenticationFilter 
     }
 
     @Override
-    protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
-        /*if (!continued) {
-            try {
-                ErrorResponse<?> errorResponse = ErrorResponse.fromErrorMessage("permission deny");
-                HttpResponseHelper.writeUnauthorizedResponse(response, errorResponse);
-            } catch (IOException ex) {
-                throw new ResponseException("write response fail", ex);
-            }
-        }*/
-        return super.onAccessDenied(request, response);
-    }
-
-    @Override
     protected boolean onLoginFailure(AuthenticationToken token, AuthenticationException e, ServletRequest request, ServletResponse response) {
         try {
             log.error("授权异常信息", e);
@@ -83,7 +70,7 @@ public class JwtHttpAuthenticationFilter extends BearerHttpAuthenticationFilter 
                 toUse = e.getCause();
             }
             AuthenticationFailCode authenticationFailCode = AuthenticationFailCode.from(toUse.getClass());
-            HttpResponseHelper.writeScOkResponse(response, ErrorResponse.fromCodeAndErrorMessage(authenticationFailCode.getCode(), authenticationFailCode.getMessage()));
+            HttpResponseHelper.writeScOkResponse(response, Response.fail(authenticationFailCode.getCode(), authenticationFailCode.getMessage()));
         } catch (IOException ex) {
             throw new ResponseException("write response fail", ex);
         }

@@ -22,6 +22,8 @@
 
 package com.escanor.user.controller;
 
+import com.escanor.core.common.Request;
+import com.escanor.core.common.Response;
 import com.escanor.jpa.utils.ModelMapperUtils;
 import com.escanor.user.dto.UserInfoDto;
 import com.escanor.user.service.UserInfoService;
@@ -41,6 +43,11 @@ public class UserController {
     @GetMapping("/findByUserName")
     public UserInfoDto findByUserName(@RequestParam("userName") String userName) {
         return ModelMapperUtils.map(userInfoService.findByUserName(userName), UserInfoDto.class);
+    }
+
+    @PostMapping("/addUser")
+    public Response<String> addUser(@RequestBody Request<UserInfoDto> request) {
+        return Response.ok();
     }
 
 }

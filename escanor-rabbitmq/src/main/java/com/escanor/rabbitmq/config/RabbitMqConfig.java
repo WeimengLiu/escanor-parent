@@ -82,16 +82,16 @@ public class RabbitMqConfig implements SmartInitializingSingleton {
     @Override
     public void afterSingletonsInstantiated() {
         try {
-            ConfigurableBeanFactory beanFactory =  (ConfigurableBeanFactory)this.beanFactory;
+            ConfigurableBeanFactory configurableBeanFactory =  (ConfigurableBeanFactory)this.beanFactory;
             log.info("开始动态注入Exchange，Binding，Queue");
             Optional.ofNullable(config.getExchanges()).ifPresent(
-                    exchanges -> exchanges.forEach(exchange -> beanFactory.registerSingleton("exchange." + exchange.getName(), exchange))
+                    exchanges -> exchanges.forEach(exchange -> configurableBeanFactory.registerSingleton("exchange." + exchange.getName(), exchange))
             );
             Optional.ofNullable(config.getBindings()).ifPresent(
-                    bindings -> bindings.forEach(binding -> beanFactory.registerSingleton("binding." + binding.getExchange() + "." + binding.getDestination() + ++this.increment, binding))
+                    bindings -> bindings.forEach(binding -> configurableBeanFactory.registerSingleton("binding." + binding.getExchange() + "." + binding.getDestination() + ++this.increment, binding))
             );
             Optional.ofNullable(config.getQueues()).ifPresent(
-                    queues -> queues.forEach(queue -> beanFactory.registerSingleton("queue." + queue.getName() , queue))
+                    queues -> queues.forEach(queue -> configurableBeanFactory.registerSingleton("queue." + queue.getName() , queue))
             );
         } catch (Exception e) {
             log.error("动态注入Exchange，Binding，Queue错误");

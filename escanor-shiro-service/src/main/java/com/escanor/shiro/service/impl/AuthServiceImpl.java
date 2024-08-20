@@ -22,9 +22,7 @@
 
 package com.escanor.shiro.service.impl;
 
-import com.escanor.core.common.ErrorResponse;
 import com.escanor.core.common.Response;
-import com.escanor.core.common.SuccessResponse;
 import com.escanor.shiro.dto.UserInfoDto;
 import com.escanor.shiro.service.AuthService;
 import com.escanor.shiro.token.JwtTokenTemplate;
@@ -47,7 +45,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public Response<?> login(String username, String password) {
+    public Response<String> login(String username, String password) {
         Assert.hasLength(username, "username not allow null");
         Assert.hasLength(password, "password not allow null");
 
@@ -62,7 +60,7 @@ public class AuthServiceImpl implements AuthService {
             return SuccessResponse.from(jwtToken, "login success");
         } catch (Exception e) {
             log.error("[" + username + "]" + " login fail", e);
-            return ErrorResponse.fromErrorMessage("login fail! please check username and password");
+            return Response.fail("login fail! please check username and password");
         }
     }
 }

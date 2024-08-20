@@ -22,7 +22,6 @@
 
 package com.escanor.shiro.filters;
 
-import lombok.Builder;
 import org.apache.shiro.web.util.RequestPairSource;
 
 import javax.servlet.ServletRequest;

@@ -22,6 +22,7 @@
 
 package com.escanor.rabbitmq.common;
 
+import com.escanor.rabbitmq.exception.SerializeMessageException;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -40,12 +41,11 @@ import java.util.UUID;
 @Component
 public class MessageConverter extends AbstractMessageConverter {
 
-    public ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
     public MessageConverter() {
         objectMapper = new ObjectMapper();
         objectMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-        //objectMapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
         objectMapper.activateDefaultTyping(LaissezFaireSubTypeValidator.instance, ObjectMapper.DefaultTyping.NON_FINAL);
     }
 
@@ -60,7 +60,7 @@ public class MessageConverter extends AbstractMessageConverter {
             }
             messageProperties.setMessageId(UUID.randomUUID().toString());
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            throw new SerializeMessageException("json process error",e);
         }
         return new Message(bytes, messageProperties);
     }
@@ -72,7 +72,7 @@ public class MessageConverter extends AbstractMessageConverter {
             try {
                 return objectMapper.readValue(message.getBody(), CommonMessage.class);
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                throw new SerializeMessageException("IO Exception",e);
             }
         }
         return message.getBody();

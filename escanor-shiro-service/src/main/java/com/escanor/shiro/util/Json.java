@@ -31,7 +31,11 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 
-public abstract class Json {
+public class Json {
+
+    private Json() {
+        throw new IllegalStateException("Utility class");
+    }
     static final ObjectMapper objectMapper = new ObjectMapper();
 
     static {
@@ -59,24 +63,31 @@ public abstract class Json {
         try {
             return objectMapper.readValue(json, tClass);
         } catch (JsonProcessingException e) {
-            throw new ResponseException("Json to Bean Error" ,e);
+            throwJsonConvertException(e);
         }
+        return null;
     }
 
     public static <T> T toBean(String json, TypeReference<T> tTypeReference) {
         try {
             return objectMapper.readValue(json, tTypeReference);
         } catch (JsonProcessingException e) {
-            throw new ResponseException("Json to Bean Error" ,e);
+            throwJsonConvertException(e);
         }
+        return null;
     }
 
     public static <T> T toBean(byte[] bytes, TypeReference<T> tTypeReference) {
         try {
             return objectMapper.readValue(bytes, tTypeReference);
         } catch (IOException e) {
-            throw new ResponseException("Json to Bean Error" ,e);
+            throwJsonConvertException(e);
         }
+        return null;
+    }
+    
+    private static void throwJsonConvertException(Throwable e) throws ResponseException{
+        throw new ResponseException("Json to Bean Error", e);
     }
 
 }

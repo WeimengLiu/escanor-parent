@@ -20,11 +20,9 @@ import org.springframework.util.StringUtils;
 import java.util.List;
 
 @Configuration
-public class WebSecurityConfig implements ApplicationContextAware {
+public class WebSecurityConfig {
 
     private PermitUrlMatcher permitUrlMatcher;
-
-    private ApplicationContext context;
 
     @Autowired
     public void setPermitUrlMatcher(PermitUrlMatcher permitUrlMatcher) {
@@ -57,10 +55,5 @@ public class WebSecurityConfig implements ApplicationContextAware {
                 .and()
                 .exceptionHandling();
         return http.build();
-    }
-
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.context = applicationContext;
     }
 }

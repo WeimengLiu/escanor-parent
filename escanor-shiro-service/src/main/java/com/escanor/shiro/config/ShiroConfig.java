@@ -30,14 +30,11 @@ import com.escanor.shiro.realm.ConsulUsernamePasswordAuthRealm;
 import com.escanor.shiro.realm.FirstFailReturnAuthenticationStrategy;
 import com.escanor.shiro.realm.UsernamePasswordAuthRealm;
 import com.escanor.shiro.token.JwtTokenTemplate;
-import org.apache.shiro.authc.pam.AllSuccessfulStrategy;
 import org.apache.shiro.authc.pam.AuthenticationStrategy;
-import org.apache.shiro.authc.pam.FirstSuccessfulStrategy;
 import org.apache.shiro.authz.Authorizer;
 import org.apache.shiro.authz.ModularRealmAuthorizer;
 import org.apache.shiro.mgt.SessionsSecurityManager;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -92,7 +89,6 @@ public class ShiroConfig {
         map.put("/**", "jwtAuth");
         factoryBean.setFilterChainDefinitionMap(map);
         //设置登录页面
-        //factoryBean.setLoginUrl("/auth/login");
 
         //设置无状态，不创建session
         factoryBean.setGlobalFilters(Collections.singletonList("noSessionCreation"));

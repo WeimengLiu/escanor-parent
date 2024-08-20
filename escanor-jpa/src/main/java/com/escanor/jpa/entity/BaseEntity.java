@@ -23,10 +23,8 @@
 package com.escanor.jpa.entity;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import org.springframework.data.domain.Auditable;
-import org.springframework.data.domain.Persistable;
-import org.springframework.data.util.ProxyUtils;
+import org.springframework.data.jpa.domain.AbstractPersistable;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
@@ -38,7 +36,7 @@ import java.util.Optional;
 
 @Data
 @MappedSuperclass
-public abstract class BaseEntity implements Auditable<String, Integer, LocalDateTime>, Serializable, Persistable<Integer> {
+public abstract class BaseEntity extends AbstractPersistable<Integer> implements Auditable<String, Integer, LocalDateTime>, Serializable {
     private static final long serialVersionUID = 141481953116476181L;
 
     @Id
@@ -54,20 +52,6 @@ public abstract class BaseEntity implements Auditable<String, Integer, LocalDate
     @Temporal(TemporalType.TIMESTAMP) //
     private @Nullable Date lastModifiedDate;
 
-    @Nullable
-    @Override
-    public Integer getId() {
-        return id;
-    }
-
-    /**
-     * Sets the id of the entity.
-     *
-     * @param id the id to set
-     */
-    protected void setId(@Nullable Integer id) {
-        this.id = id;
-    }
 
     /**
      * Must be {@link Transient} in order to ensure that no JPA provider complains because of a missing setter.
@@ -87,30 +71,6 @@ public abstract class BaseEntity implements Auditable<String, Integer, LocalDate
     @Override
     public String toString() {
         return String.format("Entity of type %s with id: %s", this.getClass().getName(), getId());
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
-    @Override
-    public boolean equals(Object obj) {
-
-        if (null == obj) {
-            return false;
-        }
-
-        if (this == obj) {
-            return true;
-        }
-
-        if (!getClass().equals(ProxyUtils.getUserClass(obj))) {
-            return false;
-        }
-
-        Persistable<?> that = (Persistable<?>) obj;
-
-        return null != this.getId() && this.getId().equals(that.getId());
     }
 
     /*
@@ -184,4 +144,5 @@ public abstract class BaseEntity implements Auditable<String, Integer, LocalDate
     public void setLastModifiedDate(LocalDateTime lastModifiedDate) {
         this.lastModifiedDate = Date.from(lastModifiedDate.atZone(ZoneId.systemDefault()).toInstant());
     }
+
 }

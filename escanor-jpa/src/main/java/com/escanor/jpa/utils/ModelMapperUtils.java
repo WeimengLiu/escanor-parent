@@ -26,6 +26,10 @@ import com.escanor.jpa.entity.BaseEntity;
 import org.modelmapper.ModelMapper;
 
 public class ModelMapperUtils {
+
+    private ModelMapperUtils(){
+        throw new IllegalStateException("Utility class");
+    }
     public static final ModelMapper MODEL_MAPPER = new ModelMapper();
 
     public static <D> D map(BaseEntity source, Class<D> dClass) {

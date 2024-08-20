@@ -26,12 +26,16 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.io.Serializable;
-
 @Data
 @EqualsAndHashCode
 @Builder
-public class Response<T> implements Serializable {
+public class Response<T> {
+
+    public static final String STR_OK = "OK";
+
+    public static final String STR_FAIL = "FAIL";
+
+
     private int status;
 
     private String message;
@@ -53,5 +57,29 @@ public class Response<T> implements Serializable {
         this.status = status;
         this.message = message;
         this.data = data;
+    }
+
+    public static Response<String> ok() {
+        return new Response<>(ResponseCode.SUCCESS, STR_OK);
+    }
+
+    public static Response<String> fail() {
+        return new Response<>(ResponseCode.ERROR, STR_FAIL);
+    }
+
+    public static <T> Response<T> ok(T data, String message) {
+        return new Response<>(ResponseCode.SUCCESS.getCode(), message, data);
+    }
+
+    public static <T> Response<T> ok(T data) {
+        return new Response<>(ResponseCode.SUCCESS, data);
+    }
+
+    public static <T> Response<T> fail(String message) {
+        return new Response<>(ResponseCode.ERROR.getCode(), message, null);
+    }
+
+    public static <T> Response<T> fail(int code, String message) {
+        return new Response<>(code, message, null);
     }
 }

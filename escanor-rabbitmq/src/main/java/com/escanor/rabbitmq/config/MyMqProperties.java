@@ -1,5 +1,7 @@
 package com.escanor.rabbitmq.config;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.util.HashMap;
@@ -68,7 +70,7 @@ public class MyMqProperties {
 
         private Long receiveTimeout = 30000L;
 
-        private String listenerHandler = "listener:defaultMqListener";
+        private ListenerHandler listenerHandler = new ListenerHandler(ListenerType.LISTENER,"defaultMqListener");
 
         private int queuePrefetch = 10;
 
@@ -110,11 +112,11 @@ public class MyMqProperties {
             this.threadMaxSize = threadMaxSize;
         }
 
-        public String getListenerHandler() {
+        public ListenerHandler getListenerHandler() {
             return listenerHandler;
         }
 
-        public void setListenerHandler(String listenerHandler) {
+        public void setListenerHandler(ListenerHandler listenerHandler) {
             this.listenerHandler = listenerHandler;
         }
 
@@ -157,6 +159,32 @@ public class MyMqProperties {
         public void setQueuePrefetch(int queuePrefetch) {
             this.queuePrefetch = queuePrefetch;
         }
+    }
+
+    @Setter
+    @Getter
+    public static class ListenerHandler {
+        private ListenerType type;
+        private String beanName;
+
+        private String methodName;
+
+        public ListenerHandler(ListenerType type, String beanName) {
+            this.type = type;
+            this.beanName = beanName;
+        }
+
+        public ListenerHandler(ListenerType type, String beanName, String methodName) {
+            this.type = type;
+            this.beanName = beanName;
+            this.methodName = methodName;
+        }
+
+    }
+
+    public enum ListenerType {
+        LISTENER,
+        METHOD;
     }
 
 }

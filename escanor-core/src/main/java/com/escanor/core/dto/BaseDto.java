@@ -25,11 +25,12 @@ package com.escanor.core.dto;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Data
 @EqualsAndHashCode
-public class BaseDto {
+public class BaseDto implements Serializable {
     private Integer id;
     private String createdBy;
     private Date createdDate;

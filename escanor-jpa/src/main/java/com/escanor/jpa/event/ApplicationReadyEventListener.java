@@ -23,8 +23,6 @@
 package com.escanor.jpa.event;
 
 import com.escanor.core.ContextHolder;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.boot.web.context.WebServerInitializedEvent;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.event.SmartApplicationListener;
@@ -34,8 +32,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class ApplicationReadyEventListener implements SmartApplicationListener {
 
-    //final Log log = LogFactory.getLog(ApplicationReadyEventListener.class);
-
     @Override
     public boolean supportsEventType(Class<? extends ApplicationEvent> eventType) {
         return WebServerInitializedEvent.class.isAssignableFrom(eventType);
@@ -44,7 +40,6 @@ public class ApplicationReadyEventListener implements SmartApplicationListener {
     @Override
     public void onApplicationEvent(ApplicationEvent event) {
         if (event instanceof WebServerInitializedEvent) {
-            //log.info("设置应用准备完成");
             ContextHolder.setApplicationReady();
         }
     }

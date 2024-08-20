@@ -30,7 +30,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public abstract class HttpResponseHelper {
+public class HttpResponseHelper {
+
+    private HttpResponseHelper() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static void writeResponse(ServletResponse servletResponse, Response<?> response, int status) throws IOException {
         OutputStream outputStream = servletResponse.getOutputStream();
         outputStream.write(Json.toJsonBytes(response));
@@ -38,16 +43,13 @@ public abstract class HttpResponseHelper {
             HttpServletResponse httpServletResponse = WebUtils.toHttp(servletResponse);
             httpServletResponse.setStatus(status);
         }
-        //outputStream.flush();
     }
 
     public static void writeScOkResponse(ServletResponse servletResponse, Response<?> response) throws IOException {
-        writeResponse(servletResponse, response,HttpServletResponse.SC_OK);
-        //outputStream.flush();
+        writeResponse(servletResponse, response, HttpServletResponse.SC_OK);
     }
 
     public static void writeUnauthorizedResponse(ServletResponse servletResponse, Response<?> response) throws IOException {
-        writeResponse(servletResponse, response,HttpServletResponse.SC_UNAUTHORIZED);
-        //outputStream.flush();
+        writeResponse(servletResponse, response, HttpServletResponse.SC_UNAUTHORIZED);
     }
 }

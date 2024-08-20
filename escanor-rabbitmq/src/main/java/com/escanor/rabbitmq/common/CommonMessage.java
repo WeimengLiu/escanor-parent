@@ -32,7 +32,7 @@ public abstract class CommonMessage implements Serializable {
     private String messageId;
     private String code;
     private String serialNo;
-    private final boolean delayed = true;
+    private boolean delayed = true;
     private String remark;
 
     private String logId;

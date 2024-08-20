@@ -233,15 +233,6 @@ public class OAuth2LoginSpec {
         return this.authenticationMatcher;
     }
 
-    /**
-     * Allows method chaining to continue configuring the {@link ServerHttpSecurity}
-     * @return the {@link ServerHttpSecurity} to continue configuring
-     */
-    /*public ServerHttpSecurity and() {
-        return ServerHttpSecurity.this;
-    }*/
-
-
     protected void configure(ServerHttpSecurity http) {
         ReactiveClientRegistrationRepository clientRegistrationRepository = getClientRegistrationRepository();
         ServerOAuth2AuthorizedClientRepository authorizedClientRepository = getAuthorizedClientRepository();

@@ -32,11 +32,11 @@ import java.util.stream.Stream;
 @Getter
 public enum AuthenticationFailCode {
 
-    AuthenticationFail(1000, "授权失败", AuthenticationException.class),
-    UnknownAccount(1001, "用户名或者密码错误", UnknownAccountException.class),
-    IncorrectCredentials(1002, "用户名或者密码错误", IncorrectCredentialsException.class),
-    JwtVerifyFail(1003, "Token校验失败", JwtVerifyFailAuthenticationException.class),
-    JwtExpired(1004, "Token过期", JwtExpiredAuthenticationException.class);
+    AUTHENTICATION_FAIL(1000, "授权失败", AuthenticationException.class),
+    UNKNOWN_ACCOUNT(1001, "用户名或者密码错误", UnknownAccountException.class),
+    INCORRECT_CREDENTIALS(1002, "用户名或者密码错误", IncorrectCredentialsException.class),
+    JWT_VERIFY_FAIL(1003, "Token校验失败", JwtVerifyFailAuthenticationException.class),
+    JWT_EXPIRED(1004, "Token过期", JwtExpiredAuthenticationException.class);
 
 
     private final int code;
@@ -50,6 +50,6 @@ public enum AuthenticationFailCode {
     }
 
     public static AuthenticationFailCode from(Class<? extends Throwable> exceptionClass) {
-        return Stream.of(values()).filter(authenticationFailCode -> authenticationFailCode.getExceptionClass().equals(exceptionClass)).findFirst().orElse(AuthenticationFail);
+        return Stream.of(values()).filter(authenticationFailCode -> authenticationFailCode.getExceptionClass().equals(exceptionClass)).findFirst().orElse(AUTHENTICATION_FAIL);
     }
 }

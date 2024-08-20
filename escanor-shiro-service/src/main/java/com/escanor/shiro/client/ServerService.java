@@ -22,11 +22,14 @@
 
 package com.escanor.shiro.client;
 
-public interface ServerService {
+public class ServerService {
+    private ServerService(){
+        throw new IllegalStateException("Utility class");
+    }
 
     /**
      * 用户信息服务
      */
-    String ESCANOR_USER_SERVICE = "escanor-user-service";
+    public static final String ESCANOR_USER_SERVICE = "escanor-user-service";
 
 }

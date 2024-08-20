@@ -25,17 +25,19 @@ package com.escanor.user.service.impl;
 import com.escanor.user.dao.UserInfoDao;
 import com.escanor.user.entity.UserInfoEntity;
 import com.escanor.user.service.UserInfoService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserInfoServiceImpl implements UserInfoService {
 
-    @Autowired
-    private UserInfoDao userInfoDao;
+    private final UserInfoDao userInfoDao;
+
+    public UserInfoServiceImpl(UserInfoDao userInfoDao) {
+        this.userInfoDao = userInfoDao;
+    }
 
     @Override
-    public UserInfoEntity  findByUserName(String userName) {
+    public UserInfoEntity findByUserName(String userName) {
         return userInfoDao.findByUserName(userName);
     }
 }

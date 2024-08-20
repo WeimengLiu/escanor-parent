@@ -22,8 +22,6 @@
 
 package com.escanor.shiro.exception;
 
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.JwtException;
 import org.apache.shiro.authc.AuthenticationException;
 
 public class JwtVerifyFailAuthenticationException extends AuthenticationException {

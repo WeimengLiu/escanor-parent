@@ -21,7 +21,6 @@
         <maven.compiler.target>8</maven.compiler.target>
         <caffeine.version>3.0.5</caffeine.version>
         <commonslang3.version>3.12.0</commonslang3.version>
-        <!--<jackson.version>2.11.4</jackson.version>-->
         <latest.powerjob.version>4.3.9</latest.powerjob.version>
         <docker.username>wmliu</docker.username>
         <docker.password>WAYNEislwm@16</docker.password>
@@ -50,6 +49,7 @@
         <module>escanor-jpa</module>
         <module>escanor-user-service</module>
         <module>escanor-security-service</module>
+        <module>escanor-kafka</module>
 
     </modules>
 

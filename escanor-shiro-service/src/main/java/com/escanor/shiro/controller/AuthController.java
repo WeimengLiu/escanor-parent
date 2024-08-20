@@ -22,18 +22,8 @@
 
 package com.escanor.shiro.controller;
 
-import com.escanor.core.common.ErrorResponse;
 import com.escanor.core.common.Response;
-import com.escanor.core.common.SuccessResponse;
-import com.escanor.shiro.dto.UserInfoDto;
 import com.escanor.shiro.service.AuthService;
-import com.escanor.shiro.token.JwtTokenTemplate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.subject.Subject;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -41,6 +31,7 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     final AuthService authService;
+
     public AuthController(AuthService authService) {
         this.authService = authService;
     }
@@ -51,19 +42,17 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public Response<?> login(String username, String password) {
+    public Response<String> login(String username, String password) {
         return authService.login(username, password);
     }
 
     @PostMapping("/loginFromBrowser")
-    public Response<?> loginFromBrowser(String username, String password) {
-        Response<?> response = authService.login(username, password);
-        return response;
+    public Response<String> loginFromBrowser(String username, String password) {
+        return authService.login(username, password);
     }
 
 
     @RequestMapping("/unauth")
-    @ResponseBody
     public String unauth() {
         return "未授权没有访问权限";
     }

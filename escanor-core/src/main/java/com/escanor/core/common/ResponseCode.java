@@ -44,12 +44,4 @@ public enum ResponseCode {
         this.code =code;
         this.message = message;
     }
-
-    public void setCode(int code) {
-        this.code = code;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
 }

@@ -25,7 +25,6 @@ package com.escanor.shiro.token;
 import com.escanor.shiro.exception.JwtExpiredAuthenticationException;
 import com.escanor.shiro.exception.JwtVerifyFailAuthenticationException;
 import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.JwtException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.shiro.authc.AuthenticationInfo;

@@ -38,7 +38,7 @@ public class MutilDataSourceConfig {
             dataSourceMap.put(dataSourcePropertiesEntry.getKey(), dataSource);
             if (ArrayUtils.isNotEmpty(myHikariConfig.getSupports())) {
                 for (String bank : myHikariConfig.getSupports()) {
-                    if (StringUtils.isEmpty(defaultKey)) {
+                    if (!StringUtils.hasText(defaultKey)) {
                         defaultKey = bank;
                     }
                     targetDataSources.put(bank, dataSourcePropertiesEntry.getKey());

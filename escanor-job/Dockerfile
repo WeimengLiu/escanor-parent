@@ -2,15 +2,15 @@
 FROM java:8
 
 #镜像的制作人
-MAINTAINER acceleratorwayne/acceleratorwayne@outlook.com
-
+#MAINTAINER acceleratorwayne/acceleratorwayne@outlook.com
+LABEL org.opencontainers.image.authors="acceleratorwayne/acceleratorwayne@outlook.com"
 #工作目录
 WORKDIR /escanor-job/
 
 RUN chmod -R 755 /escanor-job
 
 ##这里的 /tmp 目录就会在运行时自动挂载为匿名卷，任何向 /tmp 中写入的信息都不会记录进容器存储层，可以多个
-#VOLUME ["/tmp"]
+VOLUME ["/tmp"]
 
 #声明了容器应该打开的端口并没有实际上将它打开
 #EXPOSE 8080

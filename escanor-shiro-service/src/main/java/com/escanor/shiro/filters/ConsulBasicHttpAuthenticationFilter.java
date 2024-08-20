@@ -42,7 +42,7 @@ public class ConsulBasicHttpAuthenticationFilter extends BasicHttpAuthentication
         if (authorizationHeader == null || authorizationHeader.isEmpty()) {
             // Create an empty authentication token since there is no
             // Authorization header.
-            return createConsulToken("", "", request, response);
+            return createConsulToken("", "", request);
         }
 
         log.debug("Attempting to execute login with auth header");
@@ -52,16 +52,16 @@ public class ConsulBasicHttpAuthenticationFilter extends BasicHttpAuthentication
             // Create an authentication token with an empty password,
             // since one hasn't been provided in the request.
             String username = prinCred == null || prinCred.length == 0 ? "" : prinCred[0];
-            return createConsulToken(username, "", request, response);
+            return createConsulToken(username, "", request);
         }
 
         String username = prinCred[0];
         String password = prinCred[1];
 
-        return createConsulToken(username, password, request, response);
+        return createConsulToken(username, password, request);
     }
 
-    protected AuthenticationToken createConsulToken(String username, String password, ServletRequest request, ServletResponse response) {
+    protected AuthenticationToken createConsulToken(String username, String password, ServletRequest request) {
         boolean rememberMe = isRememberMe(request);
         String host = getHost(request);
         return new ConsulUsernamePasswordToken(username, password, rememberMe, host);

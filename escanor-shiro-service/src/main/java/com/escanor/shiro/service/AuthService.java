@@ -25,5 +25,5 @@ package com.escanor.shiro.service;
 import com.escanor.core.common.Response;
 
 public interface AuthService {
-    Response<?> login(String username, String password);
+    Response<String> login(String username, String password);
 }

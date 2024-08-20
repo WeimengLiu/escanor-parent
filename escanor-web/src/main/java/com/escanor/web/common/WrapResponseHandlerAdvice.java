@@ -22,11 +22,10 @@
 
 package com.escanor.web.common;
 
+import com.escanor.core.annotation.IgnoreWrapResponse;
 import com.escanor.core.common.CommonHttpHeader;
 import com.escanor.core.common.Response;
-import com.escanor.core.common.SuccessResponse;
 import com.escanor.core.exception.ResponseException;
-import com.escanor.core.annotation.IgnoreWrapResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
@@ -62,6 +61,22 @@ public class WrapResponseHandlerAdvice implements ResponseBodyAdvice<Object> {
 
     @Override
     public Object beforeBodyWrite(@Nullable Object body, MethodParameter returnType, MediaType selectedContentType, Class selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
+        if (body == null) {
+            if (null != returnType.getMethod()) {
+                returnType.getMethod();
+                if (Collection.class.isAssignableFrom(returnType.getMethod().getReturnType())) {
+                    body = EMPTY_LIST;
+                    return Response.ok(body);
+                } else if (Page.class.isAssignableFrom(returnType.getMethod().getReturnType())) {
+                    body = new PageImpl<>(Collections.emptyList());
+                    return Response.ok(body);
+                } else if (String.class.isAssignableFrom(returnType.getMethod().getReturnType())) {
+                    return null;
+                }
+            }
+            return Response.ok();
+        }
+
         if (body instanceof Response) {
             return body;
         }
@@ -71,28 +86,14 @@ public class WrapResponseHandlerAdvice implements ResponseBodyAdvice<Object> {
         //http header中有忽略包装响应标志，直接返回
         HttpHeaders httpHeaders = request.getHeaders();
         if (!httpHeaders.isEmpty()) {
-            String value  = httpHeaders.getFirst(CommonHttpHeader.IGNORE_WRAP_RESPONSE.header());
+            String value = httpHeaders.getFirst(CommonHttpHeader.IGNORE_WRAP_RESPONSE.header());
             if (StringUtils.equals(value, CommonHttpHeader.IGNORE_WRAP_RESPONSE.value())) {
                 return body;
             }
         }
-        if (body == null) {
-            if (null != returnType.getMethod()) {
-                returnType.getMethod();
-                if (Collection.class.isAssignableFrom(returnType.getMethod().getReturnType())) {
-                    body = EMPTY_LIST;
-                    return new SuccessResponse<>(body);
-                } else if (Page.class.isAssignableFrom(returnType.getMethod().getReturnType())) {
-                    body = new PageImpl<>(Collections.emptyList());
-                    return new SuccessResponse<>(body);
-                } else if (String.class.isAssignableFrom(returnType.getMethod().getReturnType())) {
-                    return null;
-                }
-            }
-            return new SuccessResponse<>();
-        }
 
-        SuccessResponse<?> data = new SuccessResponse<>(body);
+
+        Response<?> data = Response.ok(body);
         if (body instanceof String) {
             try {
                 return objectMapper.writeValueAsString(data);

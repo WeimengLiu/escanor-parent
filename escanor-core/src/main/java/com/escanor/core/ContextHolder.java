@@ -5,26 +5,30 @@ import com.escanor.core.exception.ResponseException;
 import org.springframework.util.StringUtils;
 
 public class ContextHolder {
-    static volatile int APP_READY_STATUS = 0;
 
-    static ThreadLocal<String> CODE = new ThreadLocal<>();
+    private ContextHolder() {
+        throw new IllegalStateException("Utility class");
+    }
+    static volatile int appReadyStatus = 0;
+
+    static ThreadLocal<String> code = new ThreadLocal<>();
 
     static ThreadLocal<UserContext> user = new ThreadLocal<>();
 
     public static void setApplicationReady() {
-        APP_READY_STATUS = 1;
+        appReadyStatus = 1;
     }
 
     public static boolean isApplicationReady() {
-        return APP_READY_STATUS == 1;
+        return appReadyStatus == 1;
     }
 
     public static String getCode() {
-        return CODE.get();
+        return code.get();
     }
 
     public static void setCode(String code) {
-        CODE.set(code);
+        ContextHolder.code.set(code);
     }
 
     public static String getUsername() {

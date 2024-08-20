@@ -2,7 +2,9 @@
 FROM java:8
 
 #镜像的制作人
-MAINTAINER acceleratorwayne/acceleratorwayne@outlook.com
+#MAINTAINER acceleratorwayne/acceleratorwayne@outlook.com
+LABEL org.opencontainers.image.authors="acceleratorwayne/acceleratorwayne@outlook.com"
+
 
 #工作目录
 WORKDIR /mutil-datasource/

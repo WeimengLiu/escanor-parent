@@ -37,7 +37,6 @@ import java.util.Map;
 public class UserInfoDto extends BaseDto {
 
     static final String KEY_USERNAME = "username";
-    //static final String KEY_PASSWORD = "password";
     static final String KEY_PERMS = "perms";
     static final String KEY_ROLE = "role";
 
@@ -55,9 +54,8 @@ public class UserInfoDto extends BaseDto {
     }
 
     public Map<String, Object> toJwtClaims() {
-        Map<String, Object> claims = new HashMap<>();
+        HashMap<String, Object> claims = new HashMap<>();
         claims.put(KEY_USERNAME, username);
-        //claims.put(KEY_PASSWORD, password);
         claims.put(KEY_PERMS, perms);
         claims.put(KEY_ROLE, role);
         return claims;

@@ -5,13 +5,18 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.web.server.ServerWebExchange;
 
-public abstract class IPUtils {
+import java.net.InetSocketAddress;
 
-    static String X_FORWARDED_FOR = "x-forwarded-for";
-    static String PROXY_CLIENT_IP = "Proxy-Client-IP";
-    static String WL_PROXY_CLIENT_IP = "WL-Proxy-Client-IP";
-    static String X_REAL_IP = "X-Real-IP";
-    static String UNKNOWN = "unknown";
+public class IPUtils {
+    static final String X_FORWARDED_FOR = "x-forwarded-for";
+    static final String PROXY_CLIENT_IP = "Proxy-Client-IP";
+    static final String WL_PROXY_CLIENT_IP = "WL-Proxy-Client-IP";
+    static final String X_REAL_IP = "X-Real-IP";
+    static final String UNKNOWN = "unknown";
+
+    private IPUtils() {
+        throw new IllegalStateException("Utility class");
+    }
 
     public static String getIp(ServerWebExchange exchange) {
         ServerHttpRequest request = exchange.getRequest();
@@ -27,8 +32,9 @@ public abstract class IPUtils {
             ip = httpHeaders.getFirst(X_REAL_IP);
         }
         if (StringUtils.isBlank(ip) || UNKNOWN.equalsIgnoreCase(ip)) {
-            if (null != request.getRemoteAddress()) {
-                ip = request.getRemoteAddress().getAddress().getHostAddress();
+            InetSocketAddress remoteAddr = request.getRemoteAddress();
+            if (null != remoteAddr) {
+                ip = remoteAddr.getAddress().getHostAddress();
             }
         }
         return ip;
