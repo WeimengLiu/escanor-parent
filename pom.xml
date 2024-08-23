@@ -40,16 +40,8 @@
 
     <modules>
         <module>escanor-gateway</module>
-        <module>escanor-multids</module>
-        <module>escanor-rabbitmq</module>
-        <module>escanor-core</module>
-        <module>escanor-job</module>
-        <module>escanor-shiro-service</module>
-        <module>escanor-web</module>
-        <module>escanor-jpa</module>
-        <module>escanor-user-service</module>
-        <module>escanor-security-service</module>
-        <module>escanor-kafka</module>
+        <module>escanor-base</module>
+        <module>escanor-service</module>
 
     </modules>
 
