@@ -1,5 +1,7 @@
 package com.escanor.rabbitmq.config;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.Exchange;
 import org.springframework.amqp.core.Queue;
@@ -7,6 +9,8 @@ import org.springframework.amqp.core.Queue;
 import java.util.ArrayList;
 import java.util.List;
 
+@Setter
+@Getter
 public class RabbitAdminConfig {
 
     private List<Exchange> exchanges;
@@ -16,38 +20,6 @@ public class RabbitAdminConfig {
 
     public static RabbitAdminConfigBuilder builder() {
         return new RabbitAdminConfigBuilder();
-    }
-
-    public List<Exchange> getExchanges() {
-        return exchanges;
-    }
-
-    public void setExchanges(List<Exchange> exchanges) {
-        this.exchanges = exchanges;
-    }
-
-    public List<Queue> getQueues() {
-        return queues;
-    }
-
-    public void setQueues(List<Queue> queues) {
-        this.queues = queues;
-    }
-
-    public List<Binding> getBindings() {
-        return bindings;
-    }
-
-    public void setBindings(List<Binding> bindings) {
-        this.bindings = bindings;
-    }
-
-    public List<String> getCustomKeys() {
-        return customKeys;
-    }
-
-    public void setCustomKeys(List<String> customKeys) {
-        this.customKeys = customKeys;
     }
 
     public static final class RabbitAdminConfigBuilder {

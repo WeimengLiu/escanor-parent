@@ -22,3 +22,29 @@ spring:
       ddl-auto: update
     show-sql: true
     open-in-view: false
+  rabbitmq:
+    username: admin
+    password: admin
+    virtual-host: /test
+    host: 10.162.16.24
+    bindings:
+      auto:
+        defaultKey: auto
+        defaultQueue: auto
+        mappers:
+          - code: 6447
+            queue: auto6447
+    queue:
+      listeners:
+        testListener:
+          queueNames: auto
+          minConsumer: 1
+          maxConsumer: 1
+        test6447Listener:
+          queueNames: auto6447
+          minConsumer: 1
+          maxConsumer: 1
+      enableListener: true
+    template:
+      exchange: auto
+      routing-key: auto

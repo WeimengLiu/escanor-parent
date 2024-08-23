@@ -34,35 +34,32 @@ import java.util.Map;
 import java.util.Set;
 
 @Configuration
-@EnableConfigurationProperties(MyMqProperties.class)
+@EnableConfigurationProperties(MqListenerProperties.class)
 @ConditionalOnExpression("${spring.rabbitmq.queue.enableListener:false}")
 public class RabbitMqListenerConfig implements RabbitListenerConfigurer {
     final Log log = LogFactory.getLog(RabbitMqListenerConfig.class);
 
     private final CachingConnectionFactory connectionFactory;
-    private final MyMqProperties myMqProperties;
+    private final MqListenerProperties mqListenerProperties;
     private final SpringRabbitTracing springRabbitTracing;
     private final MessageConverter messageConverter;
     private final ConfigurableBeanFactory beanFactory;
     private final MessageHandlerMethodFactory messageHandlerMethodFactory;
     private final Set<String> queueNames = new HashSet<>();
 
-    public RabbitMqListenerConfig(CachingConnectionFactory connectionFactory, MyMqProperties myMqProperties, SpringRabbitTracing springRabbitTracing, MessageConverter converter, ConfigurableBeanFactory beanFactory) {
+    public RabbitMqListenerConfig(CachingConnectionFactory connectionFactory, MqListenerProperties mqListenerProperties, SpringRabbitTracing springRabbitTracing, MessageConverter converter, ConfigurableBeanFactory beanFactory) {
         this.connectionFactory = connectionFactory;
-        this.myMqProperties = myMqProperties;
+        this.mqListenerProperties = mqListenerProperties;
         this.springRabbitTracing = springRabbitTracing;
         messageConverter = converter;
         this.beanFactory = beanFactory;
         this.messageHandlerMethodFactory = createDefaultMessageHandlerMethodFactory();
     }
 
-    private static ThreadPoolTaskExecutor getThreadPoolTaskExecutor(String queueName, MyMqProperties.MyMqListener listenerProperties) {
+    private static ThreadPoolTaskExecutor getThreadPoolTaskExecutor(String queueName, MqListenerProperties.MqListener listenerProperties) {
         ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
-        taskExecutor.setMaxPoolSize(listenerProperties.getThreadMaxSize());
-        if (listenerProperties.getMaxConsumer() > listenerProperties.getThreadMaxSize()) {
-            taskExecutor.setMaxPoolSize(listenerProperties.getMaxConsumer() + 1);
-        }
-        taskExecutor.setCorePoolSize(listenerProperties.getMaxConsumer());
+        taskExecutor.setMaxPoolSize(listenerProperties.getMaxConsumer() + 1);
+        taskExecutor.setCorePoolSize(listenerProperties.getMinConsumer());
         taskExecutor.setQueueCapacity(listenerProperties.getQueueCapacity());
         taskExecutor.setThreadNamePrefix(queueName + "-");
         taskExecutor.initialize();
@@ -89,7 +86,7 @@ public class RabbitMqListenerConfig implements RabbitListenerConfigurer {
         log.info("初始化RabbitMq Listeners结束");
     }
 
-    private SimpleRabbitListenerContainerFactory createRabbitMqListenerContainerFactory(String queueName, MyMqProperties.MyMqListener listenerProperties) {
+    private SimpleRabbitListenerContainerFactory createRabbitMqListenerContainerFactory(String queueName, MqListenerProperties.MqListener listenerProperties) {
         SimpleRabbitListenerContainerFactory factory = springRabbitTracing.newSimpleRabbitListenerContainerFactory(connectionFactory);
         // 重连间隔时间
         factory.setRecoveryInterval(listenerProperties.getRecoveryInterval());
@@ -107,11 +104,11 @@ public class RabbitMqListenerConfig implements RabbitListenerConfigurer {
     }
 
     private void initConsumerListeners(RabbitListenerEndpointRegistrar registrar) throws ClassNotFoundException {
-        Map<String, MyMqProperties.MyMqListener> listeners = myMqProperties.getListeners();
+        Map<String, MqListenerProperties.MqListener> listeners = mqListenerProperties.getListeners();
         if (!CollectionUtils.isEmpty(listeners)) {
-            for (Map.Entry<String, MyMqProperties.MyMqListener> entry : listeners.entrySet()) {
+            for (Map.Entry<String, MqListenerProperties.MqListener> entry : listeners.entrySet()) {
                 String id = entry.getKey();
-                MyMqProperties.MyMqListener listenerProperties = entry.getValue();
+                MqListenerProperties.MqListener listenerProperties = entry.getValue();
                 RabbitListenerEndpoint endpoint = getRabbitMqListener(id, listenerProperties);
                 SimpleRabbitListenerContainerFactory factory = createRabbitMqListenerContainerFactory(id, listenerProperties);
                 beanFactory.registerSingleton("simpleRabbitListenerContainerFactory-" + id, factory);
@@ -121,13 +118,13 @@ public class RabbitMqListenerConfig implements RabbitListenerConfigurer {
         }
     }
 
-    private RabbitListenerEndpoint getRabbitMqListener(String id, MyMqProperties.MyMqListener listenerProperties) throws ClassNotFoundException {
-        MyMqProperties.ListenerHandler listenerHandler = listenerProperties.getListenerHandler();
-        MyMqProperties.ListenerType type = listenerHandler.getType();
+    private RabbitListenerEndpoint getRabbitMqListener(String id, MqListenerProperties.MqListener listenerProperties) throws ClassNotFoundException {
+        MqListenerProperties.ListenerHandler listenerHandler = listenerProperties.getListenerHandler();
+        MqListenerProperties.ListenerType type = listenerHandler.getType();
         AbstractRabbitListenerEndpoint endpoint = null;
-        if (MyMqProperties.ListenerType.LISTENER == type) {
+        if (MqListenerProperties.ListenerType.LISTENER == type) {
             endpoint = createSimpleRabbitListenerEndpoint(listenerHandler);
-        } else if (MyMqProperties.ListenerType.METHOD == type) {
+        } else if (MqListenerProperties.ListenerType.METHOD == type) {
             endpoint = createMethodRabbitListenerEndpoint(listenerHandler);
         } else {
             throw new IllegalArgumentException(type + ": unsupported listener type, please check your configuration, supported type: listener , method");
@@ -143,7 +140,7 @@ public class RabbitMqListenerConfig implements RabbitListenerConfigurer {
 
     }
 
-    private SimpleRabbitListenerEndpoint createSimpleRabbitListenerEndpoint(MyMqProperties.ListenerHandler listenerHandler) {
+    private SimpleRabbitListenerEndpoint createSimpleRabbitListenerEndpoint(MqListenerProperties.ListenerHandler listenerHandler) {
         String listenerName = listenerHandler.getBeanName();
         SimpleRabbitListenerEndpoint endpoint = new SimpleRabbitListenerEndpoint();
         MessageListener listener = (MessageListener) beanFactory.getBean(listenerName);
@@ -151,7 +148,7 @@ public class RabbitMqListenerConfig implements RabbitListenerConfigurer {
         return endpoint;
     }
 
-    private MethodRabbitListenerEndpoint createMethodRabbitListenerEndpoint(MyMqProperties.ListenerHandler listenerHandler) {
+    private MethodRabbitListenerEndpoint createMethodRabbitListenerEndpoint(MqListenerProperties.ListenerHandler listenerHandler) {
         String listenerName = listenerHandler.getBeanName();
         String methodName = listenerHandler.getMethodName();
         MethodRabbitListenerEndpoint methodRabbitListenerEndpoint = new MethodRabbitListenerEndpoint();
