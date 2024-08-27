@@ -22,7 +22,6 @@
 
 package com.escanor.shiro.realm;
 
-import com.escanor.shiro.exception.WrapAuthenticationException;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -34,7 +33,7 @@ public class FirstFailReturnAuthenticationStrategy extends AbstractAuthenticatio
     public AuthenticationInfo afterAttempt(Realm realm, AuthenticationToken token, AuthenticationInfo singleRealmInfo, AuthenticationInfo aggregateInfo, Throwable t) throws AuthenticationException {
         if (null != t) {
             if (t instanceof AuthenticationException) {
-                throw new WrapAuthenticationException(t);
+                throw (AuthenticationException) t;
             }
             throw new AuthenticationException("Authentication Fail", t);
         }

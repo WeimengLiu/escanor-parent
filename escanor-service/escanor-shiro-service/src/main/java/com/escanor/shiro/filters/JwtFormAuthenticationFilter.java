@@ -26,7 +26,6 @@ import com.escanor.core.common.Response;
 import com.escanor.core.exception.ResponseException;
 import com.escanor.shiro.dto.UserInfoDto;
 import com.escanor.shiro.exception.AuthenticationFailCode;
-import com.escanor.shiro.exception.WrapAuthenticationException;
 import com.escanor.shiro.token.JwtTokenTemplate;
 import com.escanor.shiro.util.HttpResponseHelper;
 import org.apache.commons.logging.Log;
@@ -77,11 +76,7 @@ public class JwtFormAuthenticationFilter extends FormAuthenticationFilter {
     protected boolean onLoginFailure(AuthenticationToken token, AuthenticationException e, ServletRequest request, ServletResponse response) {
         try {
             log.error("授权异常信息", e);
-            Throwable toUse = e;
-            if (e instanceof WrapAuthenticationException) {
-                toUse = e.getCause();
-            }
-            AuthenticationFailCode authenticationFailCode = AuthenticationFailCode.from(toUse.getClass());
+            AuthenticationFailCode authenticationFailCode = AuthenticationFailCode.from(e.getClass());
             HttpResponseHelper.writeScOkResponse(response, Response.fail(authenticationFailCode.getCode(), authenticationFailCode.getMessage()));
         } catch (IOException ex) {
             throw new ResponseException("write response fail", ex);
