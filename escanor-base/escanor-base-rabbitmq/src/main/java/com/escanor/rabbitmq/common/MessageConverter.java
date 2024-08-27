@@ -31,6 +31,7 @@ import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.support.converter.AbstractMessageConverter;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConversionException;
 import org.springframework.stereotype.Component;
 
@@ -39,12 +40,12 @@ import java.util.UUID;
 
 
 @Component
-public class MessageConverter extends AbstractMessageConverter {
+public class MessageConverter extends Jackson2JsonMessageConverter {
 
-    private final ObjectMapper objectMapper;
+    //private final ObjectMapper objectMapper;
 
     public MessageConverter() {
-        objectMapper = new ObjectMapper();
+        super(new ObjectMapper());
         objectMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
         objectMapper.activateDefaultTyping(LaissezFaireSubTypeValidator.instance, ObjectMapper.DefaultTyping.NON_FINAL);
     }

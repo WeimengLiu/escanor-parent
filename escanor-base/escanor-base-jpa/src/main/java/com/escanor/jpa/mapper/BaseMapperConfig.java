@@ -20,27 +20,27 @@
  * SOFTWARE.
  */
 
-package com.escanor.core.common;
+package com.escanor.jpa.mapper;
 
+import com.escanor.core.dto.BaseDto;
+import com.escanor.jpa.entity.BaseEntity;
+import org.mapstruct.*;
 
-public enum CommonHttpHeader {
-    IGNORE_WRAP_RESPONSE("IgnoreWrapResponse", Boolean.TRUE.toString());
+@MapperConfig(unmappedTargetPolicy = ReportingPolicy.ERROR, mappingInheritanceStrategy = MappingInheritanceStrategy.AUTO_INHERIT_FROM_CONFIG)
+public interface BaseMapperConfig {
 
-    private final String header;
+    @Mappings(value = {
+            @Mapping(target = "createdBy", expression = "java(entity.getCreatedBy().orElse(null))"),
+            @Mapping(target = "createdDate", expression = "java(entity.getOrignalCreatedDate())"),
+            @Mapping(target = "lastModifiedBy", expression = "java(entity.getLastModifiedBy().orElse(null))"),
+            @Mapping(target = "lastModifiedDate", expression = "java(entity.getOrignalLastModifiedDate())")
+        }
+    )
+    BaseDto baseDto(BaseEntity entity);
 
-    private final String value;
-
-    CommonHttpHeader(String header, String value) {
-        this.value = value;
-        this.header = header;
-    }
-
-    public String header() {
-        return this.header;
-    }
-
-    public String value() {
-        return this.value;
-    }
-
+    @Mappings({
+            @Mapping(target = "orignalLastModifiedDate", ignore = true),
+            @Mapping(target = "orignalCreatedDate", ignore = true)
+    })
+    BaseEntity baseEntity(BaseDto baseDto);
 }

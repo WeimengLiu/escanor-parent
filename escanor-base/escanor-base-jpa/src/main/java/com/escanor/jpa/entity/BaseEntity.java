@@ -22,7 +22,8 @@
 
 package com.escanor.jpa.entity;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.domain.Auditable;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 import org.springframework.lang.Nullable;
@@ -34,13 +35,9 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.Optional;
 
-@Data
 @MappedSuperclass
-public abstract class BaseEntity extends AbstractPersistable<Integer> implements Auditable<String, Integer, LocalDateTime>, Serializable {
+public abstract class BaseEntity extends AbstractPersistable<Long> implements Auditable<String, Long, LocalDateTime>, Serializable {
     private static final long serialVersionUID = 141481953116476181L;
-
-    @Id
-    private Integer id;
 
     private @Nullable String createdBy;
 
@@ -51,6 +48,11 @@ public abstract class BaseEntity extends AbstractPersistable<Integer> implements
 
     @Temporal(TemporalType.TIMESTAMP) //
     private @Nullable Date lastModifiedDate;
+
+    @Setter
+    @Getter
+    @Version
+    private int version;
 
 
     /**
@@ -145,4 +147,19 @@ public abstract class BaseEntity extends AbstractPersistable<Integer> implements
         this.lastModifiedDate = Date.from(lastModifiedDate.atZone(ZoneId.systemDefault()).toInstant());
     }
 
+    public void setCreatedDate(@Nullable Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public void setLastModifiedDate(@Nullable Date lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public Date getOrignalCreatedDate() {
+        return this.createdDate;
+    }
+
+    public Date getOrignalLastModifiedDate() {
+        return this.lastModifiedDate;
+    }
 }

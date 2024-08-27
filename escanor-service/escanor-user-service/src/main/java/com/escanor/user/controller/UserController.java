@@ -24,14 +24,18 @@ package com.escanor.user.controller;
 
 import com.escanor.core.common.Request;
 import com.escanor.core.common.Response;
-import com.escanor.jpa.utils.ModelMapperUtils;
 import com.escanor.user.dto.UserInfoDto;
+import com.escanor.user.dto.mapper.UserInfoMapper;
+import com.escanor.user.entity.UserInfoEntity;
 import com.escanor.user.service.UserInfoService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 
 @RestController
 @RequestMapping("/user")
+@Api(tags = "用户操作")
 public class UserController {
 
     final UserInfoService userInfoService;
@@ -40,13 +44,33 @@ public class UserController {
         this.userInfoService = userInfoService;
     }
 
+    /**
+     * 普通用户查询方法，不返回密码信息
+     * @param userName 用户名
+     * @return 用户信息
+     */
+    @ApiOperation(value = "查询用户信息")
     @GetMapping("/findByUserName")
     public UserInfoDto findByUserName(@RequestParam("userName") String userName) {
-        return ModelMapperUtils.map(userInfoService.findByUserName(userName), UserInfoDto.class);
+        return UserInfoMapper.INSTANCE.userInfoDto(userInfoService.findByUserName(userName));
     }
 
+    /**
+     * 为gateway提供用户查询方法，需要返回密码
+     * @param userName 用户名
+     * @return 用户信息
+     */
+    @ApiOperation(value = "Gateway服务查询用户信息")
+    @GetMapping("/findByUserNameForGateway")
+    public UserInfoDto findByUserNameForGateway(@RequestParam("userName") String userName) {
+        return UserInfoMapper.INSTANCE.userInfoDtoForGateway(userInfoService.findByUserName(userName));
+    }
+
+    @ApiOperation(value = "新增用户")
     @PostMapping("/addUser")
     public Response<String> addUser(@RequestBody Request<UserInfoDto> request) {
+        UserInfoEntity userInfoEntity = UserInfoMapper.INSTANCE.userInfoEntity(request.getBody());
+        userInfoService.addUserInfo(userInfoEntity);
         return Response.ok();
     }
 

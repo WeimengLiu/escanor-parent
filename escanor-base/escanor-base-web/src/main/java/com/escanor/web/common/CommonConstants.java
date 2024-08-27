@@ -20,22 +20,13 @@
  * SOFTWARE.
  */
 
-package com.escanor.jpa.utils;
+package com.escanor.web.common;
 
-import com.escanor.jpa.entity.BaseEntity;
-import org.modelmapper.ModelMapper;
-
-public class ModelMapperUtils {
-
-    private ModelMapperUtils(){
+public class CommonConstants {
+    private CommonConstants() {
         throw new IllegalStateException("Utility class");
     }
-    public static final ModelMapper MODEL_MAPPER = new ModelMapper();
-
-    public static <D> D map(BaseEntity source, Class<D> dClass) {
-        if (null == source) {
-            return null;
-        }
-        return MODEL_MAPPER.map(source, dClass);
-    }
+    public static final String IGNORE_WRAP_RESPONSE_HEADER = "__IGNORE_WRAP_RESPONSE__";
+    //ACTUATOR端点路径匹配模式
+    public static final String ACTUATOR_ENDPOINT_PATTERN = "/actuator/*";
 }

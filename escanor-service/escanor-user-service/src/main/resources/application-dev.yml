@@ -23,10 +23,10 @@ spring:
     show-sql: true
     open-in-view: false
   rabbitmq:
-    username: admin
-    password: admin
-    virtual-host: /test
-    host: 10.162.16.24
+    username: escanor
+    password: escanor
+    virtual-host: test
+    host: localhost
     bindings:
       auto:
         defaultKey: auto

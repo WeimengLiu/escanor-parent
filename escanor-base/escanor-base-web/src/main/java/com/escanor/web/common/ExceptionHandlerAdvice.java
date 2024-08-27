@@ -51,7 +51,6 @@ public class ExceptionHandlerAdvice {
 
     protected final Logger logger = LoggerFactory.getLogger(ExceptionHandlerAdvice.class);
 
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(ResponseException.class)
     @ResponseBody
     Response<String> handleBadRequest(HttpServletRequest req, ResponseException ce) {
@@ -59,7 +58,6 @@ public class ExceptionHandlerAdvice {
         return Response.fail(ce.getMessage());
     }
 
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseBody
     Response<String> handleBadRequest(HttpServletRequest req, MethodArgumentNotValidException ex) {
@@ -72,7 +70,6 @@ public class ExceptionHandlerAdvice {
         return Response.fail(sb.toString());
     }
 
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(MissingServletRequestParameterException.class)
     @ResponseBody
     Response<String> handleBadRequest(HttpServletRequest req, MissingServletRequestParameterException ex) {
@@ -100,7 +97,6 @@ public class ExceptionHandlerAdvice {
     /**
      * HttpMessageNotReadableException
      */
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(HttpMessageNotReadableException.class)
     @ResponseBody
     Response<String> handleBadRequest(HttpServletRequest req, HttpMessageNotReadableException ex) {
@@ -123,7 +119,6 @@ public class ExceptionHandlerAdvice {
     /**
      * ObjectOptimisticLockingFailureException
      */
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(ObjectOptimisticLockingFailureException.class)
     @ResponseBody
     Response<String> handleBadRequest(HttpServletRequest req, ObjectOptimisticLockingFailureException ex) {

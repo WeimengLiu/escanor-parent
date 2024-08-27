@@ -26,4 +26,6 @@ import com.escanor.user.entity.UserInfoEntity;
 
 public interface UserInfoService {
     UserInfoEntity findByUserName(String userName);
+
+    UserInfoEntity addUserInfo(UserInfoEntity userInfoEntity);
 }

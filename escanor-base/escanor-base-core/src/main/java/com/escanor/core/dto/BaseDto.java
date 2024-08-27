@@ -36,4 +36,5 @@ public class BaseDto implements Serializable {
     private Date createdDate;
     private String lastModifiedBy;
     private Date lastModifiedDate;
+    private int version;
 }

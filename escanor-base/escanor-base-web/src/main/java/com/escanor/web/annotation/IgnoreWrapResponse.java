@@ -20,11 +20,14 @@
  * SOFTWARE.
  */
 
-package com.escanor.core.common;
+package com.escanor.web.annotation;
 
-public class CommonConstants {
-    private CommonConstants() {
-        throw new IllegalStateException("Utility class");
-    }
-    public static final String IGNORE_WRAP_RESPONSE_HEADER = "__IGNORE_WRAP_RESPONSE__";
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface IgnoreWrapResponse {
 }

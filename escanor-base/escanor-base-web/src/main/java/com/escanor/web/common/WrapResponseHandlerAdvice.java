@@ -22,8 +22,7 @@
 
 package com.escanor.web.common;
 
-import com.escanor.core.annotation.IgnoreWrapResponse;
-import com.escanor.core.common.CommonHttpHeader;
+import com.escanor.web.annotation.IgnoreWrapResponse;
 import com.escanor.core.common.Response;
 import com.escanor.core.exception.ResponseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -36,6 +35,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
+import org.springframework.http.server.ServletServerHttpRequest;
+import org.springframework.http.server.ServletServerHttpResponse;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
@@ -46,13 +47,15 @@ import java.util.Collections;
 
 import static java.util.Collections.EMPTY_LIST;
 
-@ControllerAdvice
+@ControllerAdvice(value = "com.escanor")
 public class WrapResponseHandlerAdvice implements ResponseBodyAdvice<Object> {
 
     final ObjectMapper objectMapper;
+    final IgnoreWrapResponseUrlMatcher ignoreWrapResponseUrlMatcher;
 
-    public WrapResponseHandlerAdvice(ObjectMapper objectMapper) {
+    public WrapResponseHandlerAdvice(ObjectMapper objectMapper, IgnoreWrapResponseUrlMatcher ignoreWrapResponseUrlMatcher) {
         this.objectMapper = objectMapper;
+        this.ignoreWrapResponseUrlMatcher = ignoreWrapResponseUrlMatcher;
     }
 
     @Override
@@ -64,6 +67,12 @@ public class WrapResponseHandlerAdvice implements ResponseBodyAdvice<Object> {
     public Object beforeBodyWrite(@Nullable Object body, MethodParameter returnType, MediaType selectedContentType, Class selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
 
         if (returnType.hasMethodAnnotation(IgnoreWrapResponse.class)) {
+            return body;
+        }
+
+
+        String url = request.getURI().getPath();
+        if (ignoreWrapResponseUrlMatcher.match(url)) {
             return body;
         }
 

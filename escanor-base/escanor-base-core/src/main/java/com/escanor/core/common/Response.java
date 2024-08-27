@@ -31,9 +31,9 @@ import lombok.EqualsAndHashCode;
 @Builder
 public class Response<T> {
 
-    public static final String OK_STR = "OK";
+    public static final String OK = "OK";
 
-    public static final String FAIL_STR = "FAIL";
+    public static final String FAIL = "FAIL";
 
 
     private int status;
@@ -60,11 +60,11 @@ public class Response<T> {
     }
 
     public static Response<String> ok() {
-        return new Response<>(ResponseCode.OK, OK_STR);
+        return new Response<>(ResponseCode.OK, OK);
     }
 
     public static Response<String> fail() {
-        return new Response<>(ResponseCode.FAIL, FAIL_STR);
+        return new Response<>(ResponseCode.FAIL, FAIL);
     }
 
     public static <T> Response<T> ok(T data, String message) {

@@ -20,18 +20,30 @@
  * SOFTWARE.
  */
 
-package com.escanor.web.common.config;
+package com.escanor.user.dto.mapper;
 
-import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import com.escanor.jpa.mapper.BaseMapperConfig;
+import com.escanor.user.dto.UserInfoDto;
+import com.escanor.user.entity.UserInfoEntity;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
 
-import java.util.TimeZone;
+@Mapper(config = BaseMapperConfig.class)
+public interface UserInfoMapper {
 
-@Configuration
-public class CommonWebConfig {
-    @Bean
-    Jackson2ObjectMapperBuilderCustomizer customizer() {
-        return objectMapperBuilder -> objectMapperBuilder.simpleDateFormat("yyyy-MM-dd hh:mm:ss").timeZone(TimeZone.getTimeZone("Asia/Shanghai"));
-    }
+    UserInfoMapper INSTANCE = Mappers.getMapper(UserInfoMapper.class);
+
+    /**
+     * 转换时忽略密码字段
+     * @param entity 用户实体
+     * @return 用户信息dto
+     */
+    @Mapping(target = "password", ignore = true)
+    UserInfoDto userInfoDto(UserInfoEntity entity);
+
+    UserInfoDto userInfoDtoForGateway(UserInfoEntity entity);
+
+    UserInfoEntity userInfoEntity(UserInfoDto userInfoDto);
+
 }

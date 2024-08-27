@@ -20,17 +20,31 @@
  * SOFTWARE.
  */
 
-package com.escanor.jpa.config;
+package com.escanor.web.config;
 
-import com.escanor.jpa.utils.ModelMapperUtils;
-import org.modelmapper.ModelMapper;
+import com.escanor.web.common.IgnoreWrapResponseUrlMatcher;
+import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+
+import javax.servlet.ServletContext;
+import java.util.TimeZone;
 
 @Configuration
-public class CommonJpaConfig {
+@EnableConfigurationProperties({BaseWebProperties.class})
+@EnableWebMvc
+public class CommonWebConfig {
     @Bean
-    ModelMapper modelMapper() {
-        return ModelMapperUtils.MODEL_MAPPER;
+    Jackson2ObjectMapperBuilderCustomizer customizer() {
+        return objectMapperBuilder -> objectMapperBuilder.simpleDateFormat("yyyy-MM-dd hh:mm:ss").timeZone(TimeZone.getTimeZone("Asia/Shanghai"));
+    }
+
+    @Bean
+    @RefreshScope
+    IgnoreWrapResponseUrlMatcher ignoreWrapResponseUrlMatcher(BaseWebProperties webProperties, ServletContext servletContext) {
+        return new IgnoreWrapResponseUrlMatcher(servletContext.getContextPath(), webProperties.getIgnoreWrapResponseUrls());
     }
 }

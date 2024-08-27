@@ -37,4 +37,8 @@ public class UserInfoDao {
     public UserInfoEntity findByUserName(String userName) {
         return userInfoRepository.findByUsername(userName);
     }
+
+    public UserInfoEntity addUserInfo(UserInfoEntity userInfoEntity) {
+       return userInfoRepository.save(userInfoEntity);
+    }
 }

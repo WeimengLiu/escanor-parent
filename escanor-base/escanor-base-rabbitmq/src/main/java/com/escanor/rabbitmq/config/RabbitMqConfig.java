@@ -1,6 +1,9 @@
 package com.escanor.rabbitmq.config;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.amqp.core.*;
@@ -36,15 +39,13 @@ public class RabbitMqConfig implements SmartInitializingSingleton {
         this.beanFactory = beanFactory;
     }
 
-    @Bean
-    public MessageConverter messageConverter(ObjectProvider<ObjectMapper> objectMappers) {
-        ObjectMapper objectMapper = objectMappers.getIfUnique();
-        if (null == objectMapper) {
-            return new Jackson2JsonMessageConverter();
-        } else {
-            return new Jackson2JsonMessageConverter(objectMapper);
-        }
-    }
+   /* @Bean
+    public MessageConverter messageConverter() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
+        objectMapper.activateDefaultTyping(LaissezFaireSubTypeValidator.instance, ObjectMapper.DefaultTyping.NON_FINAL);
+        return new Jackson2JsonMessageConverter(objectMapper);
+    }*/
 
     @Bean
     @RefreshScope

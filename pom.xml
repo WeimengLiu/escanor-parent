@@ -19,7 +19,7 @@
         <docker.image.prefix>escanor</docker.image.prefix>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
-        <caffeine.version>3.0.5</caffeine.version>
+        <caffeine.version>2.9.3</caffeine.version>
         <commonslang3.version>3.12.0</commonslang3.version>
         <latest.powerjob.version>4.3.9</latest.powerjob.version>
         <docker.username>wmliu</docker.username>
@@ -34,15 +34,18 @@
         <undertow.version>2.2.31.Final</undertow.version>
         <version.xnio>3.8.13.Final</version.xnio>
         <modelmapper.version>3.2.0</modelmapper.version>
-        <caffeine.version>3.1.8</caffeine.version>
         <jjwt.version>0.12.5</jjwt.version>
+        <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
+        <!-- swagger version-->
+        <io.springfox.version>3.0.0</io.springfox.version>
+        <knife4j.version>3.0.3</knife4j.version>
+        <io.swagger>1.5.22</io.swagger>
     </properties>
 
     <modules>
         <module>escanor-gateway</module>
         <module>escanor-base</module>
         <module>escanor-service</module>
-
     </modules>
 
     <dependencies>
@@ -90,6 +93,34 @@
                     <generateBackupPoms>false</generateBackupPoms>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>${org.mapstruct.version}</version>
+                        </path>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                        <!-- additional annotation processor required as of Lombok  -->
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok-mapstruct-binding</artifactId>
+                            <version>0.2.0</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+
         </plugins>
     </build>
 </project>

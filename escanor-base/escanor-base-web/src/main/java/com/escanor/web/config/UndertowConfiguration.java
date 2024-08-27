@@ -20,29 +20,27 @@
  * SOFTWARE.
  */
 
-package com.escanor.user.service.impl;
+package com.escanor.web.config;
 
-import com.escanor.user.dao.UserInfoDao;
-import com.escanor.user.entity.UserInfoEntity;
-import com.escanor.user.service.UserInfoService;
-import org.springframework.stereotype.Service;
+import io.undertow.server.DefaultByteBufferPool;
+import io.undertow.websockets.jsr.WebSocketDeploymentInfo;
+import org.springframework.boot.web.embedded.undertow.UndertowServletWebServerFactory;
+import org.springframework.boot.web.server.WebServerFactoryCustomizer;
+import org.springframework.context.annotation.Configuration;
 
-@Service
-public class UserInfoServiceImpl implements UserInfoService {
-
-    private final UserInfoDao userInfoDao;
-
-    public UserInfoServiceImpl(UserInfoDao userInfoDao) {
-        this.userInfoDao = userInfoDao;
-    }
-
+/**
+ * 解决启动警告
+ * UT026010: Buffer pool was not set on WebSocketDeploymentInfo, the default pool will be used
+ */
+@Configuration
+public class UndertowConfiguration implements WebServerFactoryCustomizer<UndertowServletWebServerFactory> {
     @Override
-    public UserInfoEntity findByUserName(String userName) {
-        return userInfoDao.findByUserName(userName);
-    }
-
-    @Override
-    public UserInfoEntity addUserInfo(UserInfoEntity userInfoEntity) {
-        return userInfoDao.addUserInfo(userInfoEntity);
+    public void customize(UndertowServletWebServerFactory factory) {
+        factory.addDeploymentInfoCustomizers(deploymentInfo -> {
+            WebSocketDeploymentInfo webSocketDeploymentInfo = new WebSocketDeploymentInfo();
+            // 设置合理的参数
+            webSocketDeploymentInfo.setBuffers(new DefaultByteBufferPool(false, 1024));
+            deploymentInfo.addServletContextAttribute("io.undertow.websockets.jsr.WebSocketDeploymentInfo", webSocketDeploymentInfo);
+        });
     }
 }

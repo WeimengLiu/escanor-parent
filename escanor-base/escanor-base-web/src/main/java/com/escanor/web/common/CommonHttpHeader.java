@@ -20,14 +20,27 @@
  * SOFTWARE.
  */
 
-package com.escanor.core.annotation;
+package com.escanor.web.common;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
 
-@Target(ElementType.METHOD)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface IgnoreWrapResponse {
+public enum CommonHttpHeader {
+    IGNORE_WRAP_RESPONSE("IgnoreWrapResponse", Boolean.TRUE.toString());
+
+    private final String header;
+
+    private final String value;
+
+    CommonHttpHeader(String header, String value) {
+        this.value = value;
+        this.header = header;
+    }
+
+    public String header() {
+        return this.header;
+    }
+
+    public String value() {
+        return this.value;
+    }
+
 }
