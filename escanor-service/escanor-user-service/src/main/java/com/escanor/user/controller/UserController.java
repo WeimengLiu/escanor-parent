@@ -68,10 +68,10 @@ public class UserController {
 
     @ApiOperation(value = "新增用户")
     @PostMapping("/addUser")
-    public Response<String> addUser(@RequestBody Request<UserInfoDto> request) {
+    public Response<Boolean> addUser(@RequestBody Request<UserInfoDto> request) {
         UserInfoEntity userInfoEntity = UserInfoMapper.INSTANCE.userInfoEntity(request.getBody());
         userInfoService.addUserInfo(userInfoEntity);
-        return Response.ok();
+        return Response.ok(true);
     }
 
 }

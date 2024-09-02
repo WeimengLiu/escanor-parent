@@ -77,7 +77,6 @@ public class ExceptionHandlerAdvice {
         return Response.fail("请求缺少关键参数：[" + ex.getParameterName() + "]");
     }
 
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Throwable.class)
     @ResponseBody
     Response<String> handleBadRequest(HttpServletRequest req, Throwable ex) {

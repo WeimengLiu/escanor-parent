@@ -22,11 +22,8 @@
 
 package com.escanor.web.common;
 
-import com.escanor.web.annotation.IgnoreWrapResponse;
 import com.escanor.core.common.Response;
-import com.escanor.core.exception.ResponseException;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.escanor.web.annotation.IgnoreWrapResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.MethodParameter;
 import org.springframework.data.domain.Page;
@@ -35,8 +32,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
-import org.springframework.http.server.ServletServerHttpRequest;
-import org.springframework.http.server.ServletServerHttpResponse;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
@@ -50,11 +45,9 @@ import static java.util.Collections.EMPTY_LIST;
 @ControllerAdvice(value = "com.escanor")
 public class WrapResponseHandlerAdvice implements ResponseBodyAdvice<Object> {
 
-    final ObjectMapper objectMapper;
     final IgnoreWrapResponseUrlMatcher ignoreWrapResponseUrlMatcher;
 
-    public WrapResponseHandlerAdvice(ObjectMapper objectMapper, IgnoreWrapResponseUrlMatcher ignoreWrapResponseUrlMatcher) {
-        this.objectMapper = objectMapper;
+    public WrapResponseHandlerAdvice(IgnoreWrapResponseUrlMatcher ignoreWrapResponseUrlMatcher) {
         this.ignoreWrapResponseUrlMatcher = ignoreWrapResponseUrlMatcher;
     }
 
@@ -85,11 +78,9 @@ public class WrapResponseHandlerAdvice implements ResponseBodyAdvice<Object> {
                 } else if (Page.class.isAssignableFrom(method.getReturnType())) {
                     body = new PageImpl<>(Collections.emptyList());
                     return Response.ok(body);
-                } else if (String.class.isAssignableFrom(method.getReturnType())) {
-                    return null;
                 }
             }
-            return Response.ok();
+            return Response.ok(body);
         }
 
         if (body instanceof Response) {
@@ -105,15 +96,6 @@ public class WrapResponseHandlerAdvice implements ResponseBodyAdvice<Object> {
         }
 
 
-        Response<?> data = Response.ok(body);
-        if (body instanceof String) {
-            try {
-                return objectMapper.writeValueAsString(data);
-            } catch (JsonProcessingException e) {
-                throw new ResponseException(e);
-            }
-        }
-
-        return data;
+        return Response.ok(body);
     }
 }
