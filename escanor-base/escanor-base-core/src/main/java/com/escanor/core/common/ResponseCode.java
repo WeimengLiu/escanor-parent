@@ -29,11 +29,11 @@ public enum ResponseCode {
     /**
      * 成功响应码
      */
-    OK(200, "请求成功"),
+    OK(200, "处理成功"),
     /**
      * 失败响应码
      */
-    FAIL(500, "请求失败")
+    FAIL(500, "处理失败")
     ;
 
     private final int code;

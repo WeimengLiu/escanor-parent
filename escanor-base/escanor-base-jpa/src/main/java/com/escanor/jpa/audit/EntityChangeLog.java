@@ -20,19 +20,17 @@
  * SOFTWARE.
  */
 
-package com.escanor.jpa.config.multids;
+package com.escanor.jpa.audit;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-
-import java.util.HashMap;
-import java.util.Map;
-
-@Setter
-@Getter
-@ConfigurationProperties("spring")
-public class MultiDataSourceProperties {
-    private Map<String, MyHikariConfig> dataSources = new HashMap<>();
-
+import com.escanor.jpa.event.EntityChangeEvent;
+/**
+ * 实体变更日志
+ */
+public interface EntityChangeLog {
+    /**
+     * 记录实体变更日志
+     *
+     * @param event 实体变更事件
+     */
+    void log(EntityChangeEvent event);
 }

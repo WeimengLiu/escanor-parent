@@ -48,7 +48,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Configuration
-@Profile(value = {"dev", "docker"})
+@Profile(value = {"dev", "docker", "uat"})
 @EnableKnife4j
 @EnableSwagger2
 public class SwaggerConfig implements WebMvcConfigurer {

@@ -9,5 +9,7 @@ import java.util.Set;
 @Data
 @ConfigurationProperties(prefix = "escanor.web")
 public class BaseWebProperties {
-    public String[] ignoreWrapResponseUrls = new String[]{};
+    private String[] ignoreWrapResponseUrls = new String[]{};
+
+    private boolean logAspect = false;
 }

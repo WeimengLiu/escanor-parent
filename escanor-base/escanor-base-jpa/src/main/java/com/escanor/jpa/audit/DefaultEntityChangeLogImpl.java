@@ -20,32 +20,20 @@
  * SOFTWARE.
  */
 
-package com.escanor.web.config;
+package com.escanor.jpa.audit;
 
-import com.escanor.core.factory.ObjectMapperFactory;
-import com.escanor.web.common.IgnoreWrapResponseUrlMatcher;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import com.escanor.core.util.JSON;
+import com.escanor.jpa.event.EntityChangeEvent;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-import javax.servlet.ServletContext;
+public class DefaultEntityChangeLogImpl implements EntityChangeLog {
 
-@Configuration
-@EnableConfigurationProperties({BaseWebProperties.class})
-@EnableWebMvc
-public class CommonWebConfig {
+    private static final Log log = LogFactory.getLog(DefaultEntityChangeLogImpl.class);
 
-    @Bean
-    @RefreshScope
-    IgnoreWrapResponseUrlMatcher ignoreWrapResponseUrlMatcher(BaseWebProperties webProperties, ServletContext servletContext) {
-        return new IgnoreWrapResponseUrlMatcher(servletContext.getContextPath(), webProperties.getIgnoreWrapResponseUrls());
-    }
-
-    @Bean
-    ObjectMapper objectMapper() {
-        return ObjectMapperFactory.getDefaultObjectMapper();
+    @Override
+    public void log(EntityChangeEvent event) {
+        // do nothing
+        log.info("log event: " + JSON.toJSONString(event));
     }
 }

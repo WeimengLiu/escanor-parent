@@ -22,35 +22,43 @@
 
 package com.escanor.jpa.event;
 
-import com.escanor.core.ContextHolder;
-import org.springframework.boot.web.context.WebServerInitializedEvent;
-import org.springframework.context.ApplicationEvent;
-import org.springframework.context.event.SmartApplicationListener;
-import org.springframework.core.Ordered;
-import org.springframework.stereotype.Component;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.type.Type;
 
-@Component
-public class ApplicationReadyEventListener implements SmartApplicationListener {
+import java.io.Serializable;
 
-    @Override
-    public boolean supportsEventType(Class<? extends ApplicationEvent> eventType) {
-        return WebServerInitializedEvent.class.isAssignableFrom(eventType);
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class EntityChangeEvent implements Serializable{
+    private Object entity; // 实体对象
+    private Serializable id; // 实体的标识符
+    private Object[] currentState; // 实体的当前状态
+    private Object[] previousState; // 实体的先前状态
+    private String[] propertyNames; // 实体属性的名称
+    //private Type[] types; // 实体属性的类型
+    private EventType eventType; // 事件类型
+
+
+    public enum EventType {
+        /**
+         * 创建
+         */
+        CREATE,
+        /**
+         * 更新
+         */
+        UPDATE,
+        /**
+         * 删除
+         */
+        DELETE
     }
 
-    @Override
-    public void onApplicationEvent(ApplicationEvent event) {
-        if (event instanceof WebServerInitializedEvent) {
-            ContextHolder.setApplicationReady();
-        }
-    }
 
-    @Override
-    public boolean supportsSourceType(Class<?> sourceType) {
-        return true;
-    }
 
-    @Override
-    public int getOrder() {
-        return Ordered.HIGHEST_PRECEDENCE;
-    }
 }

@@ -46,6 +46,7 @@
         <module>escanor-gateway</module>
         <module>escanor-base</module>
         <module>escanor-service</module>
+        <module>escanot-business</module>
     </modules>
 
     <dependencies>
