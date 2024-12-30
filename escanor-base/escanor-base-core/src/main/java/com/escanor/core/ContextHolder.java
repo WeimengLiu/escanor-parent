@@ -9,19 +9,10 @@ public class ContextHolder {
     private ContextHolder() {
         throw new IllegalStateException("Utility class");
     }
-    static volatile int appReadyStatus = 0;
 
     static ThreadLocal<String> code = new ThreadLocal<>();
 
     static ThreadLocal<UserContext> user = new ThreadLocal<>();
-
-    public static void setApplicationReady() {
-        appReadyStatus = 1;
-    }
-
-    public static boolean isApplicationReady() {
-        return appReadyStatus == 1;
-    }
 
     public static String getCode() {
         return code.get();
